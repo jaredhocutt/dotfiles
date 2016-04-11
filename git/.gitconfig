@@ -10,15 +10,9 @@
      p4upd = "!sh -c git checkout master; git p4 rebase; git checkout -; git rebase master;"
      p4prep = p4 submit --prepare-p4-only
 [user]
-	email = jaredh@netapp.com
+	email = jaredhocutt@gmail.com
 	name = Jared Hocutt
 [push]
 	default = simple
 [core]
-	excludesfile = /Users/jaredh/.gitignore_global
-[difftool "sourcetree"]
-	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
-	path = 
-[mergetool "sourcetree"]
-	cmd = /Applications/SourceTree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
-	trustExitCode = true
+	excludesfile = $HOME/.gitignore_global
