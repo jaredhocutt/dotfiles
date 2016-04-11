@@ -68,7 +68,6 @@ source $ZSH/oh-my-zsh.sh
 # fi
 export EDITOR='vim'
 export HOMEBREW_EDITOR='subl'
-export HOMEBREW_GITHUB_API_TOKEN='7086317372a1b68d7b7f1873a8253cb8c4107dcb'
 
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
