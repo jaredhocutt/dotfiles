@@ -87,7 +87,9 @@ alias zshconfig="subl ~/.zshrc"
 
 # Virtualenv
 export PROJECT_HOME="$HOME/projects"
-source /usr/local/bin/virtualenvwrapper.sh
+if [ -f /usr/local/bin/virtualenvwrapper.sh ]; then
+	source /usr/local/bin/virtualenvwrapper.sh
+fi
 
 # Golang
 export GOPATH="$HOME/workspaces/go"
