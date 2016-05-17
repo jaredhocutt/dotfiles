@@ -95,13 +95,6 @@ fi
 export GOPATH="$HOME/workspaces/go"
 export PATH=$PATH:$GOPATH/bin
 
-# Docker
-function dockerinit {
-	docker-machine start default
-	eval "$(docker-machine env default)"
-	echo "Docker is ready to use."
-}
-
 function dockernuke {
 	docker kill $(docker ps -q)
 	docker rm $(docker ps -aq)
