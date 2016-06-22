@@ -67,7 +67,7 @@ source $ZSH/oh-my-zsh.sh
 #   export EDITOR='mvim'
 # fi
 export EDITOR='vim'
-export HOMEBREW_EDITOR='subl'
+export HOMEBREW_EDITOR='atom'
 
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
@@ -83,7 +83,7 @@ export HOMEBREW_EDITOR='subl'
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
-alias zshconfig="subl ~/.zshrc"
+alias zshconfig="atom ~/.zshrc"
 
 # Virtualenv
 export PROJECT_HOME="$HOME/projects"
