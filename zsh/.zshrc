@@ -53,7 +53,7 @@ ZSH_THEME="jared"
 plugins=(common-aliases docker jsontools git pip sublime vagrant)
 
 # User configuration
-export PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:$HOME/bin"
+export PATH="/usr/local/bin:/usr/local/sbin:/usr/bin:/bin:/usr/sbin:/sbin:$HOME/bin"
 
 source $ZSH/oh-my-zsh.sh
 
