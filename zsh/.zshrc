@@ -1,12 +1,13 @@
+# If you come from bash you might have to change your $PATH.
+# export PATH=$HOME/bin:/usr/local/bin:$PATH
+
 # Path to your oh-my-zsh installation.
 export ZSH=$HOME/.oh-my-zsh
 
-# Set name of the theme to load.
-# Look in ~/.oh-my-zsh/themes/
-# Optionally, if you set this to "random", it'll load a random theme each
-# time that oh-my-zsh is loaded.
+# Set name of the theme to load. Optionally, if you set this to "random"
+# it'll load a random theme each time that oh-my-zsh is loaded.
+# See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
 ZSH_THEME="jared"
-# ZSH_THEME="ys"
 
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
@@ -50,12 +51,13 @@ ZSH_THEME="jared"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(common-aliases docker jsontools git pip sublime vagrant)
-
-# User configuration
-export PATH="/usr/local/bin:/usr/local/sbin:/usr/bin:/bin:/usr/sbin:/sbin:$HOME/bin"
+plugins=(common-aliases git pip)
 
 source $ZSH/oh-my-zsh.sh
+
+# User configuration
+
+# export MANPATH="/usr/local/man:$MANPATH"
 
 # You may need to manually set your language environment
 # export LANG=en_US.UTF-8
@@ -67,13 +69,13 @@ source $ZSH/oh-my-zsh.sh
 #   export EDITOR='mvim'
 # fi
 export EDITOR='vim'
-export HOMEBREW_EDITOR='atom'
+export PROJECT_HOME='~/projects'
 
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
 
 # ssh
-# export SSH_KEY_PATH="~/.ssh/dsa_id"
+# export SSH_KEY_PATH="~/.ssh/rsa_id"
 
 # Set personal aliases, overriding those provided by oh-my-zsh libs,
 # plugins, and themes. Aliases can be placed here, though oh-my-zsh
@@ -83,21 +85,8 @@ export HOMEBREW_EDITOR='atom'
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
-alias zshconfig="atom ~/.zshrc"
 
-# Virtualenv
-export PROJECT_HOME="$HOME/projects"
-if [ -f /usr/local/bin/virtualenvwrapper.sh ]; then
-	source /usr/local/bin/virtualenvwrapper.sh
+if [ -f /usr/bin/virtualenvwrapper.sh ]; then
+	source /usr/bin/virtualenvwrapper.sh
 fi
 
-# Golang
-export GOPATH="$HOME/workspaces/go"
-export PATH=$PATH:$GOPATH/bin
-
-function dockernuke {
-	docker kill $(docker ps -q)
-	docker rm $(docker ps -aq)
-	docker volume rm $(docker volume ls -q)
-	docker rmi $(docker images -aq)
-}

@@ -7,8 +7,6 @@
 	cmt = commit -sS
 	lg = log --oneline --decorate
 	upd = "!sh -c git checkout master; git pull --rebase; git checkout -; git rebase master;"
-	p4upd = "!sh -c git checkout master; git p4 rebase; git checkout -; git rebase master;"
-	p4prep = p4 submit --prepare-p4-only
 	# http://gggritso.com/human-git-aliases
 	branches = branch -a
 	stashes = stash list
