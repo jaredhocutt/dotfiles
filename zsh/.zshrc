@@ -69,7 +69,7 @@ source $ZSH/oh-my-zsh.sh
 #   export EDITOR='mvim'
 # fi
 export EDITOR='vim';
-export PROJECT_HOME='/home/jared/projects';
+export PROJECT_HOME="${HOME}/projects";
 
 export HISTSIZE=50000000;
 export HISTFILESIZE=$HISTSIZE;
