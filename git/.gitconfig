@@ -1,3 +1,5 @@
+[include]
+	path = .user.gitconfig
 [alias]
 	pl = pull --rebase
 	plce = pull --commit --no-edit
@@ -16,9 +18,6 @@
 	uncommit = reset --mixed HEAD~
 	graph = log --graph --branches --remotes --tags  --format=format:'%Cgreen%h %Creset• %<(75,trunc)%s (%cN, %cr) %Cred%d' --date-order
 	precommit = diff --cached --diff-algorithm=minimal -w
-[user]
-	email = jaredhocutt@gmail.com
-	name = Jared Hocutt
 [push]
 	default = simple
 [core]
