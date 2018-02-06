@@ -1,0 +1,49 @@
+#!/usr/bin/env bash
+
+function libvirt-static-ip() {
+  if [ $# -ne 3 ]
+  then
+    echo "Usage: `basename $0` NAME MAC IP"
+    return
+  fi
+
+  sudo virsh net-update default add ip-dhcp-host "<host mac='$2' name='$1' ip='$3' />" --live --config
+}
+
+function pubkey() {
+  cat ~/.ssh/id_rsa.pub
+}
+
+function unfuck-audio {
+  if [ $# -ne 1 ]
+  then
+    echo "Usage: `basename $0` DEVICE"
+    return
+  fi
+
+  INTERVAL=0.1
+
+  case "$1" in
+    g35)
+      while sleep $INTERVAL
+      do
+        pacmd set-source-volume alsa_input.usb-Logitech_Logitech_G35_Headset-00.analog-mono 59000
+      done
+      ;;
+    g330)
+      while sleep $INTERVAL
+      do
+        pacmd set-source-volume alsa_input.usb-Logitech_Logitech_G330_Headset-00.analog-mono 59000
+      done
+      ;;
+    builtin)
+      while sleep $INTERVAL
+      do
+        pacmd set-source-volume alsa_input.pci-0000_00_1f.3.analog-stereo 59000
+      done
+      ;;
+    *)
+      echo "Usage: `basename $0` {g35|g330|builtin}"
+  esac
+}
+
