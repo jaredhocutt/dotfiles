@@ -1,5 +1,5 @@
 alias buildah='sudo buildah'
-alias bdah='sudo buildah'
+alias bd='sudo buildah'
 alias docker='sudo docker'
 
 alias dnf-upgrade='sudo dnf clean all && sudo dnf upgrade'
