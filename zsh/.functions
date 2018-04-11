@@ -48,3 +48,12 @@ function unfuck-audio {
   esac
 }
 
+function rm-known-host {
+  if [ $# -ne 1 ]
+  then
+    echo "Usage: `basename $0` HOSTNAME"
+    return
+  fi
+
+  sed "/$1/d" ~/.ssh/known_hosts
+}
