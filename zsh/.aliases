@@ -1,6 +1,8 @@
-alias buildah='sudo buildah'
-alias bd='sudo buildah'
-alias podman='sudo podman'
-alias docker='podman'
+alias buildah="sudo buildah"
+alias bd="sudo buildah"
+alias podman="sudo podman"
+alias docker="podman"
 
-alias dnf-upgrade='sudo dnf clean all && sudo dnf upgrade'
+alias dnf-upgrade="sudo dnf clean all && sudo dnf upgrade"
+
+alias psh="pipenv shell"
