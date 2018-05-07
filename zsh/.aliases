@@ -5,4 +5,5 @@ alias docker="podman"
 
 alias dnf-upgrade="sudo dnf clean all && sudo dnf upgrade"
 
+alias penv="pipenv"
 alias psh="pipenv shell"
