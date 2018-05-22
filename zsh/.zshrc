@@ -33,4 +33,4 @@ if [ -f /usr/bin/virtualenvwrapper.sh ]; then
 	source /usr/bin/virtualenvwrapper.sh
 fi
 
-export PATH=${PATH}:${GOPATH}/bin:${HOME}/.local/bin
+export PATH=${HOME}/.local/bin:${PATH}:${GOPATH}/bin
