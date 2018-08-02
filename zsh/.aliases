@@ -1,3 +1,5 @@
+alias ip="ip --color"
+
 alias buildah="sudo buildah"
 alias bd="sudo buildah"
 alias podman="sudo podman"
