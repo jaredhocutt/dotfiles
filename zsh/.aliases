@@ -5,6 +5,9 @@ alias docker="podman"
 alias occompletion="source <(oc completion zsh)"
 
 alias dnf-upgrade="sudo dnf clean all && sudo dnf upgrade"
+alias dupg="sudo dnf upgrade --refresh"
 
 alias penv="pipenv"
 alias psh="pipenv shell"
+alias pylint-all="find . -iname '*.py' | xargs pylint"
+
