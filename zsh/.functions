@@ -57,3 +57,38 @@ function rm-known-host {
 
   sed -i "/$1/d" ~/.ssh/known_hosts
 }
+
+function ec2-bastion {
+  if [ $# -ne 1 ]
+  then
+    echo "Usage: `basename $0` AWS_PROFILE"
+    return
+  fi
+
+  export AWS_PROFILE=$1
+
+  BASTION_ID=${EC2_BASTION_ID[$1]}
+
+  echo
+  echo "Starting instance..."
+  echo
+  aws ec2 start-instances --instance-ids ${BASTION_ID}
+
+  echo
+  echo "Waiting for instance to start..."
+  echo
+  aws ec2 wait instance-running --instance-ids ${BASTION_ID}
+
+  BASTION_HOSTNAME=$(aws ec2 describe-instances --instance-ids ${BASTION_ID} --query 'Reservations[].Instances[].PublicDnsName' --output text)
+
+  echo
+  echo "Waiting for port 22..."
+  echo
+  timeout 30 bash -c 'until printf "" 2>>/dev/null >>/dev/tcp/$0/$1; do sleep 1; done' ${BASTION_HOSTNAME} 22
+
+  echo
+  echo "Connecting to instance..."
+  echo
+  ssh -i ${EC2_BASTION_KEY[$1]} ec2-user@${BASTION_HOSTNAME}
+
+}
