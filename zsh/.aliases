@@ -1,7 +1,6 @@
 alias ip="ip --color"
 
 alias buildah="sudo buildah"
-alias docker="podman"
 alias occompletion="source <(oc completion zsh)"
 
 alias dnf-upgrade="sudo dnf clean all && sudo dnf upgrade"
