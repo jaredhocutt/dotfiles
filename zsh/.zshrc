@@ -17,6 +17,7 @@ source $ZSH/oh-my-zsh.sh
 export EDITOR='vim';
 export PROJECT_HOME="${HOME}/projects";
 export GOPATH="${PROJECT_HOME}/go";
+export GPG_TTY=$(tty)
 
 export HISTSIZE=50000000;
 export HISTFILESIZE=$HISTSIZE;
