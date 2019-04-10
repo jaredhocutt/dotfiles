@@ -19,6 +19,7 @@
 	uncommit = reset --mixed HEAD~
 	graph = log --graph --branches --remotes --tags  --format=format:'%Cgreen%h %Creset• %<(75,trunc)%s (%cN, %cr) %Cred%d' --date-order
 	precommit = diff --cached --diff-algorithm=minimal -w
+	ignore = "!gi() { curl -sL https://www.gitignore.io/api/$@ ;}; gi"
 [push]
 	default = simple
 [core]
