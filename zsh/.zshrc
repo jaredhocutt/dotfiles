@@ -9,7 +9,7 @@ ZSH_THEME="jared"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(common-aliases git pip)
+plugins=(common-aliases git git-extras pip aws copyfile encode64 jsontools)
 
 source $ZSH/oh-my-zsh.sh
 
