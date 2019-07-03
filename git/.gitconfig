@@ -28,3 +28,7 @@
 	program = gpg2
 [cola]
 	spellcheck = false
+[commit]
+	gpgSign = true
+[tag]
+	forceSignAnnotated = true
