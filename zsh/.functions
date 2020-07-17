@@ -59,3 +59,12 @@ function ec2-bastion {
   ssh -i ${EC2_BASTION_KEY[$1]} ec2-user@${BASTION_HOSTNAME}
 }
 
+function b64d {
+  if [ $# -ne 1 ]
+  then
+    echo "Usage: `basename $0` CONTENT"
+    return
+  fi
+
+  echo $1 | base64 -d -
+}
