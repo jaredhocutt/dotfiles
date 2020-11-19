@@ -68,3 +68,22 @@ function b64d {
 
   echo $1 | base64 -d -
 }
+
+function gopro-webcam {
+  sudo modprobe v4l2loopback exclusive_caps=1 devices=1 video_nr=20 card_label="Virtual Camera"
+  ffmpeg -f v4l2 -input_format yuyv422 -i $(v4l2-ctl --list-devices | grep -A1 "Cam Link 4K" | grep "/dev/video" | sed -e 's/^[ \t]*//') -codec copy -f v4l2 -loglevel warning $@ /dev/video20
+}
+
+function lets_encrypt_cert {
+  mkdir -p $(pwd)/letsencrypt/{config,work,logs}
+
+  certbot certonly \
+    --config-dir $(pwd)/letsencrypt/config \
+    --work-dir $(pwd)/letsencrypt/work \
+    --logs-dir $(pwd)/letsencrypt/logs \
+    --agree-tos \
+    --dns-route53 \
+    --dns-route53-propagation-seconds 45 \
+    --server https://acme-v02.api.letsencrypt.org/directory
+}
+
