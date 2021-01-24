@@ -23,6 +23,10 @@ export HISTSIZE=50000000;
 export HISTFILESIZE=$HISTSIZE;
 export HISTCONTROL=ignoredups;
 
+if [ $TILIX_ID ] || [ $VTE_VERSION ]; then
+        source /etc/profile.d/vte.sh
+fi
+
 for file in ~/.{aliases,functions,secrets}; do
 	if [[ -r "$file" ]] && [[ -f "$file" ]]; then
 		source "$file"

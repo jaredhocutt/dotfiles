@@ -87,3 +87,17 @@ function lets_encrypt_cert {
     --server https://acme-v02.api.letsencrypt.org/directory
 }
 
+function vault_passphrase {
+  pwgen --capitalize --numerals --secure 200 1 | head -n1 | gpg --armor --recipient jaredhocutt@gmail.com --encrypt --output vault_passphrase.gpg
+}
+
+function vault_passphrase_decrypt {
+  gpg --batch --use-agent --decrypt vault_passphrase.gpg
+}
+
+function venv_selinux {
+  for i in $(ls /usr/lib64/python3.*/site-packages | grep selinux); do
+    ln -s /usr/lib64/python3.*/site-packages/${i} ${VIRTUAL_ENV}/lib64/python3.*/site-packages/
+  done
+}
+
