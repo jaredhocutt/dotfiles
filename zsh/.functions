@@ -101,3 +101,7 @@ function venv_selinux {
   done
 }
 
+function reboot_windows {
+  sudo grub2-reboot "$(sudo grep -i windows /boot/efi/EFI/fedora/grub.cfg | cut -d"'" -f2)"
+  reboot
+}
