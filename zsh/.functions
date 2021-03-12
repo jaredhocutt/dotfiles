@@ -105,3 +105,17 @@ function reboot_windows {
   sudo grub2-reboot "$(sudo grep -i windows /boot/efi/EFI/fedora/grub.cfg | cut -d"'" -f2)"
   reboot
 }
+
+function download_openshift {
+  if [ $# -ne 1 ]
+  then
+    echo "Usage: `basename $0` OPENSHIFT_VERSION"
+    return
+  fi
+
+  wget http://mirror.openshift.com/pub/openshift-v4/clients/ocp/stable-${1}/openshift-install-linux.tar.gz
+  wget http://mirror.openshift.com/pub/openshift-v4/clients/ocp/stable-${1}/openshift-client-linux.tar.gz
+
+  tar xvf openshift-install-linux.tar.gz openshift-install
+  tar xvf openshift-client-linux.tar.gz oc kubectl
+}
