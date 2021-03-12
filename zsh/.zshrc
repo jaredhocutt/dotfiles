@@ -14,14 +14,14 @@ plugins=(common-aliases git git-extras pip aws copyfile encode64 jsontools)
 source $ZSH/oh-my-zsh.sh
 
 # User configuration
-export EDITOR='vim';
-export PROJECT_HOME="${HOME}/projects";
-export GOPATH="${PROJECT_HOME}/go";
+export EDITOR='vim'
+export PROJECT_HOME="${HOME}/projects"
+export GOPATH="${HOME}/go"
 export GPG_TTY=$(tty)
 
-export HISTSIZE=50000000;
-export HISTFILESIZE=$HISTSIZE;
-export HISTCONTROL=ignoredups;
+export HISTSIZE=50000000
+export HISTFILESIZE=$HISTSIZE
+export HISTCONTROL=ignoredups
 
 if [ $TILIX_ID ] || [ $VTE_VERSION ]; then
         source /etc/profile.d/vte.sh
