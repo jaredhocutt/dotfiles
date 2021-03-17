@@ -106,7 +106,7 @@ function reboot_windows {
   reboot
 }
 
-function download_openshift {
+function openshift_download {
   if [ $# -ne 1 ]
   then
     echo "Usage: `basename $0` OPENSHIFT_VERSION"
