@@ -113,8 +113,16 @@ function openshift_download {
     return
   fi
 
-  wget http://mirror.openshift.com/pub/openshift-v4/clients/ocp/stable-${1}/openshift-install-linux.tar.gz
-  wget http://mirror.openshift.com/pub/openshift-v4/clients/ocp/stable-${1}/openshift-client-linux.tar.gz
+  openshift_version_parts=( $(echo "${1}" | tr "." "\n") )
+
+  if [ ${#openshift_version_parts[@]} -eq 2 ]
+  then
+    wget http://mirror.openshift.com/pub/openshift-v4/clients/ocp/stable-${1}/openshift-install-linux.tar.gz
+    wget http://mirror.openshift.com/pub/openshift-v4/clients/ocp/stable-${1}/openshift-client-linux.tar.gz
+  else
+    wget http://mirror.openshift.com/pub/openshift-v4/clients/ocp/${1}/openshift-install-linux.tar.gz
+    wget http://mirror.openshift.com/pub/openshift-v4/clients/ocp/${1}/openshift-client-linux.tar.gz
+  fi
 
   tar xvf openshift-install-linux.tar.gz openshift-install
   tar xvf openshift-client-linux.tar.gz oc kubectl
