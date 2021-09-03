@@ -53,7 +53,8 @@ PROMPT="
 %{$terminfo[bold]$fg[yellow]%}${current_dir}%{$reset_color%}\
 ${hg_info}\
 ${git_info}
-%{$terminfo[bold]$fg[red]%}%(!.#.») %{$reset_color%}"
+%{$terminfo[bold]$fg[red]%}%(!.#.❯) %{$reset_color%}"
+#%{$terminfo[bold]$fg[red]%}%(!.#.») %{$reset_color%}"
 
 if [[ "$USER" == "root" ]]; then
 PROMPT="
@@ -65,5 +66,5 @@ PROMPT="
 %{$terminfo[bold]$fg[yellow]%}${current_dir}%{$reset_color%}\
 ${hg_info}\
 ${git_info}
-%{$terminfo[bold]$fg[red]%}%(!.#.») %{$reset_color%}"
+%{$terminfo[bold]$fg[red]%}%(!.#.❯) %{$reset_color%}"
 fi
