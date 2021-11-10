@@ -131,3 +131,13 @@ function openshift_download {
   rm -f openshift-install-linux.tar.gz
   rm -f openshift-client-linux.tar.gz
 }
+
+function video2gif {
+  if [ $# -ne 4 ]
+  then
+    echo "Usage: `basename $0` INPUT FPS SCALE OUTPUT"
+    return
+  fi
+
+  ffmpeg -i $1 -vf "fps=$2,scale=$3:-1:flags=lanczos,split[s0][s1];[s0]palettegen[p];[s1][p]paletteuse" -loop 0 $4
+}
