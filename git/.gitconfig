@@ -24,8 +24,8 @@
 	default = simple
 [core]
 	excludesfile = $HOME/.gitignore_global
-[gpg]
-	program = gpg2
+#[gpg]
+#	program = gpg2
 [cola]
 	spellcheck = false
 [commit]
