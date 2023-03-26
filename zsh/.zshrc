@@ -51,3 +51,12 @@ if [[ -z "$XDG_RUNTIME_DIR" ]]; then
     fi
   fi
 fi
+
+# Fix for openshift-install on Apple silicon
+# https://veducate.co.uk/openshift-install-apple-macbook-m1/
+export GODEBUG=asyncpreemptoff=1
+
+# Fix for Ansible on MacOS
+# https://github.com/ansible/ansible/issues/76322#issuecomment-974147955
+export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
+

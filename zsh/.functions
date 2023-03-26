@@ -22,7 +22,7 @@ function rm-known-host {
     return
   fi
 
-  sed -i "/$1/d" ~/.ssh/known_hosts
+  sed -i "/${1}/d" ~/.ssh/known_hosts
 }
 
 function ec2-bastion {
@@ -114,22 +114,34 @@ function openshift_download {
     return
   fi
 
+  if [ "$(uname)" = "Darwin" ]
+  then
+    client_os="mac"
+
+    #if [ "$(uname -m)" = "arm64" ]
+    #then
+    #  client_os="${client_os}-arm64"
+    #fi
+  else
+    client_os="linux"
+  fi
+
   openshift_version_parts=( $(echo "${1}" | tr "." "\n") )
 
   if [ ${#openshift_version_parts[@]} -eq 2 ]
   then
-    wget http://mirror.openshift.com/pub/openshift-v4/clients/ocp/stable-${1}/openshift-install-linux.tar.gz
-    wget http://mirror.openshift.com/pub/openshift-v4/clients/ocp/stable-${1}/openshift-client-linux.tar.gz
+    wget http://mirror.openshift.com/pub/openshift-v4/clients/ocp/stable-${1}/openshift-install-${client_os}.tar.gz
+    wget http://mirror.openshift.com/pub/openshift-v4/clients/ocp/stable-${1}/openshift-client-${client_os}.tar.gz
   else
-    wget http://mirror.openshift.com/pub/openshift-v4/clients/ocp/${1}/openshift-install-linux.tar.gz
-    wget http://mirror.openshift.com/pub/openshift-v4/clients/ocp/${1}/openshift-client-linux.tar.gz
+    wget http://mirror.openshift.com/pub/openshift-v4/clients/ocp/${1}/openshift-install-${client_os}.tar.gz
+    wget http://mirror.openshift.com/pub/openshift-v4/clients/ocp/${1}/openshift-client-${client_os}.tar.gz
   fi
 
-  tar xvf openshift-install-linux.tar.gz openshift-install
-  tar xvf openshift-client-linux.tar.gz oc kubectl
+  tar xvf openshift-install-${client_os}.tar.gz openshift-install
+  tar xvf openshift-client-${client_os}.tar.gz oc kubectl
 
-  rm -f openshift-install-linux.tar.gz
-  rm -f openshift-client-linux.tar.gz
+  rm -f openshift-install-${client_os}.tar.gz
+  rm -f openshift-client-${client_os}.tar.gz
 }
 
 function video2gif {
@@ -166,5 +178,25 @@ function ssh-config-sync {
   then
     rsync -av truenas:/mnt/data/backup/rsync/ssh/config ~/.ssh/config
   fi
+}
+
+function dnstoys {
+  dig +noall +answer +additional "$1" @dns.toys
+}
+
+function redhat-aws-saml {
+  echo "Checking for existing Kerberos token"
+
+  klist
+  if [ "$?" != "0" ]
+  then
+    echo "You need a valid Kerberos token to proceed. Please renew your Kerberos token"
+    exit 1
+  fi
+
+  cd ~/projects/redhat-aws-automation
+
+  export AWS_PROFILE=saml
+  pipenv run ./aws-saml.py --session-duration 14400
 }
 

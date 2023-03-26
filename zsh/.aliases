@@ -2,6 +2,10 @@ alias occompletion="source <(oc completion zsh)"
 
 alias dnf-upgrade="sudo dnf clean all && sudo dnf upgrade"
 alias dupg="sudo dnf upgrade --refresh"
+alias bupg="brew update && brew upgrade"
 
 alias pylint-all="find . -iname '*.py' | xargs pylint"
 
+alias ytdl="yt-dlp --write-description --write-info-json --write-annotations --write-sub --write-thumbnail --output '%(title)s (%(id)s) [%(resolution)s]/%(title)s (%(id)s) [%(resolution)s].%(ext)s'"
+
+alias mkcachedir="echo 'Signature: 8a477f597d28d172789f06886806bc55' > CACHEDIR.TAG"
