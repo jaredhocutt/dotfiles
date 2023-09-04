@@ -11,18 +11,13 @@ function libvirt-static-ip() {
 }
 
 function pubkey() {
-  cat ~/.ssh/id_rsa.pub | xclip -selection clipboard
-  cat ~/.ssh/id_rsa.pub
-}
-
-function rm-known-host {
-  if [ $# -ne 1 ]
-  then
-    echo "Usage: `basename $0` HOSTNAME"
-    return
+  if [ "$(uname)" = "Darwin" ]; then
+    cat ~/.ssh/id_rsa.pub | pbcopy
+  else
+    cat ~/.ssh/id_rsa.pub | xclip -selection clipboard
   fi
 
-  sed -i "/${1}/d" ~/.ssh/known_hosts
+  cat ~/.ssh/id_rsa.pub
 }
 
 function ec2-bastion {

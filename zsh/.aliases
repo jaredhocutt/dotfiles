@@ -1,4 +1,5 @@
 alias occompletion="source <(oc completion zsh)"
+alias k=kubectl
 
 alias dnf-upgrade="sudo dnf clean all && sudo dnf upgrade"
 alias dupg="sudo dnf upgrade --refresh"
