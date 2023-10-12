@@ -6,6 +6,7 @@ alias dupg="sudo dnf upgrade --refresh"
 alias bupg="brew update && brew upgrade"
 
 alias pylint-all="find . -iname '*.py' | xargs pylint"
+alias gitkeep-roles="find . \( -name 'files' -o -name 'templates' \) -empty -type d -exec echo {} \; -exec touch {}/.gitkeep \;"
 
 alias ytdl="yt-dlp --write-description --write-info-json --write-annotations --write-sub --write-thumbnail --output '%(title)s (%(id)s) [%(resolution)s]/%(title)s (%(id)s) [%(resolution)s].%(ext)s'"
 
