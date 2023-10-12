@@ -9,7 +9,7 @@
 	cmt = commit -sS
 	#lg = log --oneline --decorate
 	lg = log --pretty=format:'%Cred%h%Creset %C(blue)<%aN>%Creset %C(green)%G?%Creset  %C(yellow)%d%Creset %s'
-	upd = "!git checkout master && git pull --rebase && git checkout - && git rebase master"
+	upd = "!git checkout main && git pull --rebase && git checkout - && git rebase main"
 	aliases = config --get-regexp alias
 	# http://gggritso.com/human-git-aliases
 	branches = branch -a
