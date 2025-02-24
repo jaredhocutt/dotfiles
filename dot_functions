@@ -20,40 +20,6 @@ function pubkey() {
   cat ~/.ssh/id_rsa.pub
 }
 
-function ec2-bastion {
-  if [ $# -ne 1 ]
-  then
-    echo "Usage: `basename $0` AWS_PROFILE"
-    return
-  fi
-
-  export AWS_PROFILE=$1
-
-  BASTION_ID=${EC2_BASTION_ID[$1]}
-
-  echo
-  echo "Starting instance..."
-  echo
-  aws ec2 start-instances --instance-ids ${BASTION_ID}
-
-  echo
-  echo "Waiting for instance to start..."
-  echo
-  aws ec2 wait instance-running --instance-ids ${BASTION_ID}
-
-  BASTION_HOSTNAME=$(aws ec2 describe-instances --instance-ids ${BASTION_ID} --query 'Reservations[].Instances[].PublicDnsName' --output text)
-
-  echo
-  echo "Waiting for port 22..."
-  echo
-  timeout 30 bash -c 'until printf "" 2>>/dev/null >>/dev/tcp/$0/$1; do sleep 1; done' ${BASTION_HOSTNAME} 22
-
-  echo
-  echo "Connecting to instance..."
-  echo
-  ssh -i ${EC2_BASTION_KEY[$1]} ec2-user@${BASTION_HOSTNAME}
-}
-
 function b64d {
   if [ $# -ne 1 ]
   then
@@ -62,11 +28,6 @@ function b64d {
   fi
 
   echo $1 | base64 -d -
-}
-
-function gopro-webcam {
-  sudo modprobe v4l2loopback exclusive_caps=1 devices=1 video_nr=20 card_label="Virtual Camera"
-  ffmpeg -f v4l2 -input_format yuyv422 -i $(v4l2-ctl --list-devices | grep -A1 "Cam Link 4K" | grep "/dev/video" | sed -e 's/^[ \t]*//') -codec copy -f v4l2 -loglevel warning $@ /dev/video20
 }
 
 function lets_encrypt_cert {
@@ -157,22 +118,6 @@ function episodesplit {
   fi
 
   ffmpeg -i ${1} -vcodec copy -acodec copy -ss ${2} -to ${3} ${4}
-}
-
-function ssh-config-sync {
-  if [ $# -ne 1 ]
-  then
-    echo "Usage: `basename $0` upload|download"
-    return
-  fi
-
-  if [ "$1" = "upload" ]
-  then
-    rsync -av ~/.ssh/config truenas:/mnt/data/backup/rsync/ssh/config
-  elif [ "$1" = "download" ]
-  then
-    rsync -av truenas:/mnt/data/backup/rsync/ssh/config ~/.ssh/config
-  fi
 }
 
 function dnstoys {
