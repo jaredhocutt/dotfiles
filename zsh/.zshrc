@@ -60,3 +60,6 @@ export GODEBUG=asyncpreemptoff=1
 # https://github.com/ansible/ansible/issues/76322#issuecomment-974147955
 export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
 
+
+# Added by LM Studio CLI (lms)
+export PATH="$PATH:/Users/jhocutt/.cache/lm-studio/bin"
