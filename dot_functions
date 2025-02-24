@@ -1,0 +1,197 @@
+#!/usr/bin/env bash
+
+function libvirt-static-ip() {
+  if [ $# -ne 3 ]
+  then
+    echo "Usage: `basename $0` NAME MAC IP"
+    return
+  fi
+
+  sudo virsh net-update default add ip-dhcp-host "<host mac='$2' name='$1' ip='$3' />" --live --config
+}
+
+function pubkey() {
+  if [ "$(uname)" = "Darwin" ]; then
+    cat ~/.ssh/id_rsa.pub | pbcopy
+  else
+    cat ~/.ssh/id_rsa.pub | xclip -selection clipboard
+  fi
+
+  cat ~/.ssh/id_rsa.pub
+}
+
+function ec2-bastion {
+  if [ $# -ne 1 ]
+  then
+    echo "Usage: `basename $0` AWS_PROFILE"
+    return
+  fi
+
+  export AWS_PROFILE=$1
+
+  BASTION_ID=${EC2_BASTION_ID[$1]}
+
+  echo
+  echo "Starting instance..."
+  echo
+  aws ec2 start-instances --instance-ids ${BASTION_ID}
+
+  echo
+  echo "Waiting for instance to start..."
+  echo
+  aws ec2 wait instance-running --instance-ids ${BASTION_ID}
+
+  BASTION_HOSTNAME=$(aws ec2 describe-instances --instance-ids ${BASTION_ID} --query 'Reservations[].Instances[].PublicDnsName' --output text)
+
+  echo
+  echo "Waiting for port 22..."
+  echo
+  timeout 30 bash -c 'until printf "" 2>>/dev/null >>/dev/tcp/$0/$1; do sleep 1; done' ${BASTION_HOSTNAME} 22
+
+  echo
+  echo "Connecting to instance..."
+  echo
+  ssh -i ${EC2_BASTION_KEY[$1]} ec2-user@${BASTION_HOSTNAME}
+}
+
+function b64d {
+  if [ $# -ne 1 ]
+  then
+    echo "Usage: `basename $0` CONTENT"
+    return
+  fi
+
+  echo $1 | base64 -d -
+}
+
+function gopro-webcam {
+  sudo modprobe v4l2loopback exclusive_caps=1 devices=1 video_nr=20 card_label="Virtual Camera"
+  ffmpeg -f v4l2 -input_format yuyv422 -i $(v4l2-ctl --list-devices | grep -A1 "Cam Link 4K" | grep "/dev/video" | sed -e 's/^[ \t]*//') -codec copy -f v4l2 -loglevel warning $@ /dev/video20
+}
+
+function lets_encrypt_cert {
+  mkdir -p $(pwd)/letsencrypt/{config,work,logs}
+
+  certbot certonly \
+    --config-dir $(pwd)/letsencrypt/config \
+    --work-dir $(pwd)/letsencrypt/work \
+    --logs-dir $(pwd)/letsencrypt/logs \
+    --agree-tos \
+    --dns-route53 \
+    --dns-route53-propagation-seconds 45 \
+    --server https://acme-v02.api.letsencrypt.org/directory
+}
+
+function vault_passphrase {
+  pwgen --capitalize --numerals --secure 200 1 | head -n1 | gpg --armor --recipient jaredhocutt@gmail.com --encrypt --output vault_passphrase.gpg
+}
+
+function vault_passphrase_decrypt {
+  gpg --batch --use-agent --decrypt vault_passphrase.gpg
+}
+
+function venv_selinux {
+  for i in $(ls /usr/lib64/python3.*/site-packages | grep selinux); do
+    ln -s /usr/lib64/python3.*/site-packages/${i} ${VIRTUAL_ENV}/lib64/python3.*/site-packages/
+  done
+}
+
+function reboot_windows {
+  #sudo grub2-reboot "$(sudo grep -i windows /boot/efi/EFI/fedora/grub.cfg | cut -d"'" -f2)"
+  sudo grub2-reboot "$(sudo grep -i windows /boot/grub2/grub.cfg | cut -d"'" -f2)"
+  reboot
+}
+
+function openshift_download {
+  if [ $# -ne 1 ]
+  then
+    echo "Usage: `basename $0` OPENSHIFT_VERSION"
+    return
+  fi
+
+  if [ "$(uname)" = "Darwin" ]
+  then
+    client_os="mac"
+
+    #if [ "$(uname -m)" = "arm64" ]
+    #then
+    #  client_os="${client_os}-arm64"
+    #fi
+  else
+    client_os="linux"
+  fi
+
+  openshift_version_parts=( $(echo "${1}" | tr "." "\n") )
+
+  if [ ${#openshift_version_parts[@]} -eq 2 ]
+  then
+    wget http://mirror.openshift.com/pub/openshift-v4/clients/ocp/stable-${1}/openshift-install-${client_os}.tar.gz
+    wget http://mirror.openshift.com/pub/openshift-v4/clients/ocp/stable-${1}/openshift-client-${client_os}.tar.gz
+  else
+    wget http://mirror.openshift.com/pub/openshift-v4/clients/ocp/${1}/openshift-install-${client_os}.tar.gz
+    wget http://mirror.openshift.com/pub/openshift-v4/clients/ocp/${1}/openshift-client-${client_os}.tar.gz
+  fi
+
+  tar xvf openshift-install-${client_os}.tar.gz openshift-install
+  tar xvf openshift-client-${client_os}.tar.gz oc kubectl
+
+  rm -f openshift-install-${client_os}.tar.gz
+  rm -f openshift-client-${client_os}.tar.gz
+}
+
+function video2gif {
+  if [ $# -ne 4 ]
+  then
+    echo "Usage: `basename $0` INPUT FPS SCALE OUTPUT"
+    return
+  fi
+
+  ffmpeg -i $1 -vf "fps=$2,scale=$3:-1:flags=lanczos,split[s0][s1];[s0]palettegen[p];[s1][p]paletteuse" -loop 0 $4
+}
+
+function episodesplit {
+  if [ $# -ne 4 ]
+  then
+    echo "Usage: `basename $0` INPUT START END OUTPUT"
+    return
+  fi
+
+  ffmpeg -i ${1} -vcodec copy -acodec copy -ss ${2} -to ${3} ${4}
+}
+
+function ssh-config-sync {
+  if [ $# -ne 1 ]
+  then
+    echo "Usage: `basename $0` upload|download"
+    return
+  fi
+
+  if [ "$1" = "upload" ]
+  then
+    rsync -av ~/.ssh/config truenas:/mnt/data/backup/rsync/ssh/config
+  elif [ "$1" = "download" ]
+  then
+    rsync -av truenas:/mnt/data/backup/rsync/ssh/config ~/.ssh/config
+  fi
+}
+
+function dnstoys {
+  dig +noall +answer +additional "$1" @dns.toys
+}
+
+function redhat-aws-saml {
+  echo "Checking for existing Kerberos token"
+
+  klist
+  if [ "$?" != "0" ]
+  then
+    echo "You need a valid Kerberos token to proceed. Please renew your Kerberos token"
+    exit 1
+  fi
+
+  cd ~/projects/redhat-aws-automation
+
+  export AWS_PROFILE=saml
+  pipenv run ./aws-saml.py --session-duration 14400
+}
+

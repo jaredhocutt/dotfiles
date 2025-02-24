@@ -1,0 +1,11 @@
+alias chez=chezmoi
+
+alias occompletion="source <(oc completion zsh)"
+alias k=kubectl
+
+alias pylint-all="find . -iname '*.py' | xargs pylint"
+alias gitkeep-roles="find . \( -name 'files' -o -name 'templates' \) -empty -type d -exec echo {} \; -exec touch {}/.gitkeep \;"
+
+alias ytdl="yt-dlp --write-description --write-info-json --write-annotations --write-sub --write-thumbnail --output '%(title)s (%(id)s) [%(resolution)s]/%(title)s (%(id)s) [%(resolution)s].%(ext)s'"
+
+alias mkcachedir="echo 'Signature: 8a477f597d28d172789f06886806bc55' > CACHEDIR.TAG"
