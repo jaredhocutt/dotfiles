@@ -1,0 +1,39 @@
+[include]
+	path = .user.gitconfig
+[alias]
+	pl = pull --rebase
+	plce = pull --commit --no-edit
+	st = status
+	br = branch
+	co = checkout
+	cmt = commit -sS
+	#lg = log --oneline --decorate
+	lg = log --pretty=format:'%Cred%h%Creset %C(blue)<%aN>%Creset %C(green)%G?%Creset  %C(yellow)%d%Creset %s'
+	upd = "!git checkout main && git pull --rebase && git checkout - && git rebase main"
+	aliases = config --get-regexp alias
+	# http://gggritso.com/human-git-aliases
+	branches = branch -a
+	stashes = stash list
+	unstage = reset -q HEAD --
+	discard = checkout --
+	uncommit = reset --mixed HEAD~
+	graph = log --graph --branches --remotes --tags  --format=format:'%Cgreen%h %Creset• %<(75,trunc)%s (%cN, %cr) %Cred%d' --date-order
+	precommit = diff --cached --diff-algorithm=minimal -w
+	ignore = "!gi() { curl -sL https://www.gitignore.io/api/$@ ;}; gi"
+[push]
+	default = simple
+[core]
+	excludesfile = $HOME/.gitignore_global
+#[gpg]
+#	program = gpg2
+[cola]
+	spellcheck = false
+[commit]
+	gpgSign = true
+[tag]
+	forceSignAnnotated = true
+[init]
+	defaultBranch = main
+[user]
+	email = {{ .email | quote }}
+	name = Jared Hocutt
