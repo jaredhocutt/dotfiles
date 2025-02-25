@@ -1,0 +1,54 @@
+version: 2
+
+global:
+  backup:
+    host: {{ .restic.host }}
+  forget:
+    keep-daily: 7
+    keep-weekly: 5
+    keep-monthly: 12
+    keep-yearly: 20
+
+locations:
+  home:
+    from: {{ .chezmoi.homeDir }}
+    to:
+      - b2
+    forget: prune
+    options:
+      backup:
+        exclude:
+          - {{ .chezmoi.homeDir }}/.Trash
+          - {{ .chezmoi.homeDir }}/Downloads
+          - {{ .chezmoi.homeDir }}/Library/Application Support/FileProvider
+          - {{ .chezmoi.homeDir }}/Library/Application Support/Plex
+          - {{ .chezmoi.homeDir }}/Library/Biome
+          - {{ .chezmoi.homeDir }}/Library/Caches
+          - {{ .chezmoi.homeDir }}/Library/Containers
+          - {{ .chezmoi.homeDir }}/Library/Daemon Containers
+          - {{ .chezmoi.homeDir }}/Library/Google/GoogleSoftwareUpdate
+          - {{ .chezmoi.homeDir }}/Library/Group Containers/group.com.apple.CoreSpeech
+          - {{ .chezmoi.homeDir }}/Library/Group Containers/group.com.apple.secure-control-center-preferences
+          - {{ .chezmoi.homeDir }}/Library/Metadata
+          - {{ .chezmoi.homeDir }}/Library/Mobile Documents
+          - {{ .chezmoi.homeDir }}/Library/OpenAudible
+          - {{ .chezmoi.homeDir }}/.local/share/containers/podman/machine
+        exclude-caches: true
+    hooks:
+      before:
+        - 'curl -m 10 --retry 5 -X POST -H "Content-Type: text/plain" --data "Starting backup for location: ${AUTORESTIC_LOCATION}" {{ .restic.healthcheck_url }}/start'
+      failure:
+        - 'curl -m 10 --retry 5 -X POST -H "Content-Type: text/plain" --data "Backup failed for location: ${AUTORESTIC_LOCATION}" {{ .restic.healthcheck_url }}/fail'
+      success:
+        - 'curl -m 10 --retry 5 -X POST -H "Content-Type: text/plain" --data "Backup successful for location: ${AUTORESTIC_LOCATION}" {{ .restic.healthcheck_url }}'
+
+backends:
+  b2:
+    type: s3
+    path: {{ .restic.b2_path }}
+    key: {{ (bitwardenFields "item" "chezmoi").ResticB2Key.value }}
+    env:
+      AWS_ACCESS_KEY_ID: {{ (bitwardenFields "item" "chezmoi").ResticB2AccessKey.value }}
+      AWS_SECRET_ACCESS_KEY: {{ (bitwardenFields "item" "chezmoi").ResticB2SecretKey.value }}
+
+
