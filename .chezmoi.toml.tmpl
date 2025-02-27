@@ -1,0 +1,16 @@
+{{- $email := promptStringOnce . "email" "Email Address" -}}
+
+[data]
+	email = {{ $email | quote }}
+
+{{ if eq .chezmoi.os "darwin" }}
+{{- $restic_host := promptStringOnce . "restic.host" "Restic Host" -}}
+{{- $restic_healthcheck_url := promptStringOnce . "restic.healthcheck_url" "Restic Healthcheck URL" -}}
+{{- $restic_b2_path := promptStringOnce . "restic.b2_path" "Restic B2 Path" -}}
+
+[data.restic]
+        host = {{ $restic_host | quote  }}
+	healthcheck_url = {{ $restic_healthcheck_url | quote }}
+	b2_path = {{ $restic_b2_path | quote }}
+{{- end }}
+
