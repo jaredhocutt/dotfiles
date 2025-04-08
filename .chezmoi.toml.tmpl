@@ -9,8 +9,7 @@
 {{- $restic_b2_path := promptStringOnce . "restic.b2_path" "Restic B2 Path" -}}
 
 [data.restic]
-        host = {{ $restic_host | quote  }}
+	host = {{ $restic_host | quote  }}
 	healthcheck_url = {{ $restic_healthcheck_url | quote }}
 	b2_path = {{ $restic_b2_path | quote }}
 {{- end }}
-
