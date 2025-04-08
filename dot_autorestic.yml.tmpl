@@ -1,25 +1,33 @@
 version: 2
 
 global:
+  all:
+    pack-size: 128
   backup:
     host: {{ .restic.host }}
+    tag:
+      - autorestic
   forget:
     keep-daily: 7
     keep-weekly: 5
-    keep-monthly: 12
-    keep-yearly: 20
+    keep-monthly: 6
+    keep-yearly: 5
 
 locations:
   home:
     from: {{ .chezmoi.homeDir }}
-    to:
-      - b2
+    to: b2
     forget: prune
     options:
       backup:
         exclude:
+          - "*.app"
+          - {{ .chezmoi.homeDir }}/.cache
+          - {{ .chezmoi.homeDir }}/.local/share/containers/podman/machine
+          - {{ .chezmoi.homeDir }}/.ollama
           - {{ .chezmoi.homeDir }}/.Trash
           - {{ .chezmoi.homeDir }}/Downloads
+          - {{ .chezmoi.homeDir }}/Drive
           - {{ .chezmoi.homeDir }}/Library/Application Support/FileProvider
           - {{ .chezmoi.homeDir }}/Library/Application Support/Plex
           - {{ .chezmoi.homeDir }}/Library/Biome
@@ -32,8 +40,10 @@ locations:
           - {{ .chezmoi.homeDir }}/Library/Metadata
           - {{ .chezmoi.homeDir }}/Library/Mobile Documents
           - {{ .chezmoi.homeDir }}/Library/OpenAudible
-          - {{ .chezmoi.homeDir }}/.local/share/containers/podman/machine
+          - {{ .chezmoi.homeDir }}/Pictures/Photos Library.photoslibrary
         exclude-caches: true
+        tag:
+          - homedir
     hooks:
       before:
         - 'curl -m 10 --retry 5 -X POST -H "Content-Type: text/plain" --data "Starting backup for location: ${AUTORESTIC_LOCATION}" {{ .restic.healthcheck_url }}/start'
