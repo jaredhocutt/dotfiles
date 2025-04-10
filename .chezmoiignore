@@ -2,7 +2,6 @@ LICENSE
 README.md
 
 {{- if ne .chezmoi.os "darwin" }}
-Library/*
+Library/
 .autorestic.yml
 {{- end }}
-
