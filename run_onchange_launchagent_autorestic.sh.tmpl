@@ -1,3 +1,4 @@
+{{- if eq .chezmoi.os "darwin" }}
 #!/usr/bin/env zsh
 
 # ~/Library/LaunchAgents/net.hocutt.backup.autorestic.plist
@@ -7,3 +8,5 @@ echo "Reloading LaunchAgent for net.hocutt.backup.autorestic"
 
 launchctl bootout gui/$(id -u) ~/Library/LaunchAgents/net.hocutt.backup.autorestic.plist
 launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/net.hocutt.backup.autorestic.plist
+
+{{- end }}
