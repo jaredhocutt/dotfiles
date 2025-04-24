@@ -13,6 +13,7 @@ packages:
       - gnupg
       - htop
       - jq
+      - mas
       - nmap
       - pipx
       - podman
@@ -59,3 +60,16 @@ packages:
       - spotify
       - visual-studio-code
       - vlc
+    mas:
+      - name: Magnet
+        id: 441258766
+      - name: Bitwarden
+        id: 1352778147
+      - name: Notability
+        id: 360593530
+      - name: Good Notes 6
+        id: 1444383602
+      - name: Speedtest by Ookla
+        id: 1153157709
+      - name: Windows App
+        id: 1295203466
