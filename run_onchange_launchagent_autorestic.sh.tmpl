@@ -6,6 +6,9 @@
 
 echo "Reloading LaunchAgent for net.hocutt.backup.autorestic"
 
-launchctl bootout gui/$(id -u) ~/Library/LaunchAgents/net.hocutt.backup.autorestic.plist
+if launchctl print gui/$(id -u)/net.hocutt.backup.autorestic &>/dev/null; then
+  launchctl bootout gui/$(id -u) ~/Library/LaunchAgents/net.hocutt.backup.autorestic.plist
+fi
+
 launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/net.hocutt.backup.autorestic.plist
 {{ end -}}
