@@ -6,6 +6,7 @@ packages:
       - autorestic
       - awscli
       - bitwarden-cli
+      - dockutil
       - ffmpeg
       - git
       - git-lfs
