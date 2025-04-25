@@ -55,10 +55,10 @@ locations:
 backends:
   b2:
     type: s3
-    path: {{ .restic.b2_path }}
-    key: {{ (bitwardenFields "item" "chezmoi").ResticB2Key.value }}
+    path: {{ (bitwardenFields "item" "chezmoi").restic_b2_path.value }}
+    key: {{ (bitwardenFields "item" "chezmoi").restic_b2_key.value }}
     env:
-      AWS_ACCESS_KEY_ID: {{ (bitwardenFields "item" "chezmoi").ResticB2AccessKey.value }}
-      AWS_SECRET_ACCESS_KEY: {{ (bitwardenFields "item" "chezmoi").ResticB2SecretKey.value }}
+      AWS_ACCESS_KEY_ID: {{ (bitwardenFields "item" "chezmoi").restic_b2_access_key.value }}
+      AWS_SECRET_ACCESS_KEY: {{ (bitwardenFields "item" "chezmoi").restic_b2_secret_key.value }}
 
 
