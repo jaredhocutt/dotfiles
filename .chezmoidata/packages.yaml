@@ -38,9 +38,11 @@ packages:
       - audio-hijack
       - bartender
       - betterdisplay
+      - brave-browser
       - domzilla-caffeine
       - firefox
       - fission
+      - font-noto-sans-mono
       - gimp
       - gitkraken
       - handbrake
