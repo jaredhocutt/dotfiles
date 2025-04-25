@@ -1,7 +1,9 @@
 {{- $email := promptStringOnce . "email" "Email Address" -}}
+{{- $box_name := promptStringOnce . "box_name" "Box Name" -}}
 
 [data]
 	email = {{ $email | quote }}
+	box_name = {{ $box_name | quote }}
 
 {{ if eq .chezmoi.os "darwin" }}
 {{- $restic_host := promptStringOnce . "restic.host" "Restic Host" -}}
