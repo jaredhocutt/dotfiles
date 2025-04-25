@@ -16,6 +16,7 @@ packages:
       - jq
       - mas
       - nmap
+      - ollama
       - pipx
       - podman
       - python@3.11
