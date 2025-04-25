@@ -39,6 +39,7 @@ packages:
       - bartender
       - betterdisplay
       - brave-browser
+      - chatgpt
       - domzilla-caffeine
       - firefox
       - fission
