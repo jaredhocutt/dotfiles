@@ -27,6 +27,8 @@ defaults write com.apple.dock mru-spaces -int 0
 
 defaults write com.apple.spaces spans-displays -int 1
 
+defaults write com.apple.screencapture location -string "~/Pictures/screenshots"
+
 defaults write com.apple.WindowManager EnableStandardClickToShowDesktop -int 0
 
 # Bartender
