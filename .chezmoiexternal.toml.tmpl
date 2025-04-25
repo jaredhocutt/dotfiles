@@ -1,0 +1,37 @@
+[".tmux"]
+	type = "git-repo"
+	url = "https://github.com/gpakosz/.tmux.git"
+	refreshPeriod = "168h"
+
+{{- $fontDir := "" }}
+{{- if eq .chezmoi.os "darwin" }}
+{{-   $fontDir = "Library/Fonts" }}
+{{- else if eq .chezmoi.os "linux" }}
+{{-   $fontDir = ".local/share/fonts" }}
+{{- end }}
+{{- range (list "Regular" "Bold" "Italic" "Bold Italic") }}
+["{{ $fontDir }}/MesloLGS NF {{ . }}.ttf"]
+    type = "file"
+    url = "https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS NF {{ . }}.ttf"
+    refreshPeriod = "168h"
+{{- end }}
+
+[".oh-my-zsh"]
+    type = "archive"
+    url = "https://github.com/ohmyzsh/ohmyzsh/archive/master.tar.gz"
+    exact = true
+    stripComponents = 1
+    refreshPeriod = "168h"
+
+[".oh-my-zsh/custom/plugins/zsh-syntax-highlighting"]
+    type = "archive"
+    url = "https://github.com/zsh-users/zsh-syntax-highlighting/archive/master.tar.gz"
+    exact = true
+    stripComponents = 1
+    refreshPeriod = "168h"
+
+[".oh-my-zsh/custom/themes/powerlevel10k"]
+    type = "archive"
+    url = "https://github.com/romkatv/powerlevel10k/archive/{{ (gitHubLatestRelease "romkatv/powerlevel10k").TagName }}.tar.gz"
+	exact = true
+    stripComponents = 1
