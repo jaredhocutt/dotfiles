@@ -28,3 +28,31 @@ defaults write com.apple.dock mru-spaces -int 0
 defaults write com.apple.spaces spans-displays -int 1
 
 defaults write com.apple.WindowManager EnableStandardClickToShowDesktop -int 0
+
+# Bartender
+defaults write com.surteesstudios.Bartender BartenderBarOnlyOnNotchScreens -int 1
+defaults write com.surteesstudios.Bartender IfScreenIsBiggerDontHide -int 1
+defaults write com.surteesstudios.Bartender IfScreenIsBiggerThanDontHide -float 1815.0
+defaults write com.surteesstudios.Bartender SUEnableAutomaticChecks -int 1
+defaults write com.surteesstudios.Bartender UpdateWelcomeMessageShowAgainB5 -int 1
+
+# BetterDisplay
+defaults write pro.betterdisplay.BetterDisplay SUEnableAutomaticChecks -int 1
+
+# Caffeine
+defaults write net.domzilla.caffeine CAActivateAtLaunch -int 1
+defaults write net.domzilla.caffeine CADeactivateOnManualSleep -int 1
+defaults write net.domzilla.caffeine CASuppressLaunchMessage -int 1
+
+# GPG
+defaults write org.gpgtools.common UseKeychain -string NO
+
+# Handbrake
+defaults write fr.handbrake.HandBrake HBUseSourceFolderDestination -int 1
+defaults write fr.handbrake.HandBrake SUEnableAutomaticChecks -int 1
+
+# Scroll Reverser
+defaults write com.pilotmoon.scroll-reverser HideIcon -int 1
+defaults write com.pilotmoon.scroll-reverser InvertScrollingOn -int 1
+defaults write com.pilotmoon.scroll-reverser ReverseTrackpad -int 0
+defaults write com.pilotmoon.scroll-reverser ReverseX -int 1
