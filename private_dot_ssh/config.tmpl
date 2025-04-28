@@ -1,0 +1,45 @@
+Host router
+	HostName {{ (bitwardenFields "item" "chezmoi").ssh_config_ip_router.value }}
+	User root
+
+Host edge
+        HostName {{ (bitwardenFields "item" "chezmoi").ssh_config_ip_edge.value }}
+
+Host services
+	HostName {{ (bitwardenFields "item" "chezmoi").ssh_config_ip_services.value }}
+
+Host dakboard
+        HostName {{ (bitwardenFields "item" "chezmoi").ssh_config_ip_dakboard.value }}
+        User pi
+
+Host dakboard-office
+	HostName {{ (bitwardenFields "item" "chezmoi").ssh_config_ip_dakboard_office.value }}
+	User pi
+
+Host home-assistant
+	HostName {{ (bitwardenFields "item" "chezmoi").ssh_config_ip_home_assistant.value }}
+	User homeassistant
+
+Host truenas
+        HostName {{ (bitwardenFields "item" "chezmoi").ssh_config_ip_truenas.value }}
+        User root
+
+Host octoprint
+	HostName {{ (bitwardenFields "item" "chezmoi").ssh_config_ip_octoprint.value }}
+	User pi
+
+Host jhocutt-mac
+	HostName {{ (bitwardenFields "item" "chezmoi").ssh_config_ip_jhocutt_mac.value }}
+	User jhocutt
+
+Host jared-mac
+	HostName {{ (bitwardenFields "item" "chezmoi").ssh_config_ip_jared_mac.value }}
+
+Host *.amazonaws.com
+        User ec2-user
+        StrictHostKeyChecking no
+        UserKnownHostsFile /dev/null
+
+Host *
+        User jared
+        IdentityFile ~/.ssh/id_ed25519
