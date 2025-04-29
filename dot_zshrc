@@ -48,6 +48,11 @@ for file in ~/.{aliases,functions,secrets}; do
 done
 unset file
 
+# ZSH Autocompletions
+# Make ← and → always move the cursor on the command line, even when you are in the menu
+bindkey -M menuselect  '^[[D' .backward-char  '^[OD' .backward-char
+bindkey -M menuselect  '^[[C'  .forward-char  '^[OC'  .forward-char
+
 # Create or attach to a tmux session when SSHing into a machine
 if [[ -n "$PS1" ]] && [[ -z "$TMUX" ]] && [[ -n "$SSH_CONNECTION" ]]; then
 	tmux attach-session -t ssh_tmux || tmux new-session -s ssh_tmux
