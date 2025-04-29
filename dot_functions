@@ -1,16 +1,10 @@
 #!/usr/bin/env bash
 
-function libvirt-static-ip() {
-  if [ $# -ne 3 ]
-  then
-    echo "Usage: `basename $0` NAME MAC IP"
-    return
-  fi
-
-  sudo virsh net-update default add ip-dhcp-host "<host mac='$2' name='$1' ip='$3' />" --live --config
+bw_session() {
+  export BW_SESSION=$(bw unlock --raw)
 }
 
-function pubkey() {
+pubkey() {
   if [ "$(uname)" = "Darwin" ]; then
     cat ~/.ssh/id_rsa.pub | pbcopy
   else
@@ -20,17 +14,7 @@ function pubkey() {
   cat ~/.ssh/id_rsa.pub
 }
 
-function b64d {
-  if [ $# -ne 1 ]
-  then
-    echo "Usage: `basename $0` CONTENT"
-    return
-  fi
-
-  echo $1 | base64 -d -
-}
-
-function lets_encrypt_cert {
+lets_encrypt_cert() {
   mkdir -p $(pwd)/letsencrypt/{config,work,logs}
 
   certbot certonly \
@@ -43,27 +27,26 @@ function lets_encrypt_cert {
     --server https://acme-v02.api.letsencrypt.org/directory
 }
 
-function vault_passphrase {
+vault_passphrase() {
   pwgen --capitalize --numerals --secure 200 1 | head -n1 | gpg --armor --recipient jaredhocutt@gmail.com --encrypt --output vault_passphrase.gpg
 }
 
-function vault_passphrase_decrypt {
+vault_passphrase_decrypt() {
   gpg --batch --use-agent --decrypt vault_passphrase.gpg
 }
 
-function venv_selinux {
+venv_selinux() {
   for i in $(ls /usr/lib64/python3.*/site-packages | grep selinux); do
     ln -s /usr/lib64/python3.*/site-packages/${i} ${VIRTUAL_ENV}/lib64/python3.*/site-packages/
   done
 }
 
-function reboot_windows {
-  #sudo grub2-reboot "$(sudo grep -i windows /boot/efi/EFI/fedora/grub.cfg | cut -d"'" -f2)"
+reboot_windows() {
   sudo grub2-reboot "$(sudo grep -i windows /boot/grub2/grub.cfg | cut -d"'" -f2)"
   reboot
 }
 
-function openshift_download {
+openshift_download() {
   if [ $# -ne 1 ]
   then
     echo "Usage: `basename $0` OPENSHIFT_VERSION"
@@ -100,7 +83,7 @@ function openshift_download {
   rm -f openshift-client-${client_os}.tar.gz
 }
 
-function video2gif {
+video2gif() {
   if [ $# -ne 4 ]
   then
     echo "Usage: `basename $0` INPUT FPS SCALE OUTPUT"
@@ -110,7 +93,7 @@ function video2gif {
   ffmpeg -i $1 -vf "fps=$2,scale=$3:-1:flags=lanczos,split[s0][s1];[s0]palettegen[p];[s1][p]paletteuse" -loop 0 $4
 }
 
-function episodesplit {
+episode_split() {
   if [ $# -ne 4 ]
   then
     echo "Usage: `basename $0` INPUT START END OUTPUT"
@@ -120,23 +103,7 @@ function episodesplit {
   ffmpeg -i ${1} -vcodec copy -acodec copy -ss ${2} -to ${3} ${4}
 }
 
-function dnstoys {
+dnstoys() {
   dig +noall +answer +additional "$1" @dns.toys
-}
-
-function redhat-aws-saml {
-  echo "Checking for existing Kerberos token"
-
-  klist
-  if [ "$?" != "0" ]
-  then
-    echo "You need a valid Kerberos token to proceed. Please renew your Kerberos token"
-    exit 1
-  fi
-
-  cd ~/projects/redhat-aws-automation
-
-  export AWS_PROFILE=saml
-  pipenv run ./aws-saml.py --session-duration 14400
 }
 
