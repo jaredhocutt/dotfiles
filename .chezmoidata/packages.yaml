@@ -74,6 +74,8 @@ packages:
         id: 441258766
       - name: Notability
         id: 360593530
+      - name: Parcel
+        id: 639968404
       - name: Speedtest by Ookla
         id: 1153157709
       - name: WhatsApp Messenger
