@@ -42,6 +42,7 @@ packages:
       - brave-browser
       - chatgpt
       - domzilla-caffeine
+      - duplicati
       - firefox
       - fission
       - font-noto-sans-mono
