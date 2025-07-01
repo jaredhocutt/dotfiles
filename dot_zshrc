@@ -58,7 +58,7 @@ if [[ -n "$PS1" ]] && [[ -z "$TMUX" ]] && [[ -n "$SSH_CONNECTION" ]]; then
 	tmux attach-session -t ssh_tmux || tmux new-session -s ssh_tmux
 fi
 
-export PATH=${HOME}/.local/bin:${PATH}:${GOPATH}/bin
+export PATH=${HOME}/.local/bin:/snap/bin:${PATH}:${GOPATH}/bin
 
 # Podman setup for WSL2
 # https://dev.to/bowmanjd/using-podman-on-windows-subsystem-for-linux-wsl-58ji
