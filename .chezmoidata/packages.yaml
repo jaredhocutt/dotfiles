@@ -81,5 +81,7 @@ packages:
         id: 1153157709
       - name: WhatsApp Messenger
         id: 310633997
+      - name: Wireguard
+        id: 1451685025
       - name: Windows App
         id: 1295203466
