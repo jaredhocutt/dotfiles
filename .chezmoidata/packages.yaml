@@ -48,7 +48,7 @@ packages:
       - font-noto-sans-mono
       - gimp
       - gitkraken
-      - handbrake
+      - handbrake-app
       - insync
       - istat-menus
       - iterm2
