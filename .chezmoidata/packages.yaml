@@ -3,7 +3,6 @@ packages:
     formulae:
       - ansible
       - ansible-lint
-      - autorestic
       - awscli
       - bitwarden-cli
       - dockutil
