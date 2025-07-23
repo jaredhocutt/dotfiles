@@ -1,6 +1,6 @@
 #!/usr/bin/env zsh
 
-/opt/homebrew/bin/brew bundle --file=/dev/stdin <<EOF
+/opt/homebrew/bin/brew bundle --no-upgrade --file=/dev/stdin <<EOF
 {{ range .packages.darwin.formulae -}}
 brew {{ . | quote }}
 {{ end -}}
