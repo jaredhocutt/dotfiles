@@ -5,6 +5,7 @@ packages:
       - ansible-lint
       - awscli
       - bitwarden-cli
+      - direnv
       - dockutil
       - ffmpeg
       - git
@@ -12,6 +13,7 @@ packages:
       - gnu-sed
       - gnupg
       - htop
+      - infisical
       - jq
       - kubectl
       - mas
