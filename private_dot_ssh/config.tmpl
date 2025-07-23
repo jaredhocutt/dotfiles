@@ -5,6 +5,9 @@ Host router
 Host edge
         HostName {{ (bitwardenFields "item" "chezmoi").ssh_config_ip_edge.value }}
 
+Host apps
+        HostName {{ (bitwardenFields "item" "chezmoi").ssh_config_ip_apps.value }}
+
 Host services
 	HostName {{ (bitwardenFields "item" "chezmoi").ssh_config_ip_services.value }}
 
