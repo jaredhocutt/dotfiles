@@ -87,3 +87,9 @@ packages:
         id: 1451685025
       - name: Windows App
         id: 1295203466
+  linux:
+    apt:
+      - direnv
+      - python3.13
+      - tree
+      - unzip
