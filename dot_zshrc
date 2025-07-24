@@ -9,6 +9,11 @@ ZSH_THEME="jared"
 # Uncomment the following line to disable bi-weekly auto-update checks.
 DISABLE_AUTO_UPDATE="true"
 
+# Homebrew
+if [[ -e /opt/homebrew/bin/brew ]]; then
+        eval "$(/opt/homebrew/bin/brew shellenv)"
+fi
+
 plugins=(
   chezmoi
   common-aliases
