@@ -37,6 +37,7 @@ packages:
       - zsh
     casks:
       - alfred
+      - apparency
       - appcleaner
       - audio-hijack
       - bartender
