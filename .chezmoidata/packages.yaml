@@ -11,6 +11,7 @@ packages:
       - dockutil
       - ffmpeg
       - git
+      - git-filter-repo
       - git-lfs
       - gnu-sed
       - gnupg
