@@ -41,7 +41,7 @@ export GPG_TTY=$(tty)
 # History
 export HISTSIZE=50000000
 export HISTFILESIZE=$HISTSIZE
-export HISTCONTROL=ignoredups
+export HISTCONTROL=ignorespace:ignoredups
 
 # Homebrew
 if [[ -e /opt/homebrew/bin/brew ]]; then
