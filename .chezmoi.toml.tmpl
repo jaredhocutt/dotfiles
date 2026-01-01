@@ -2,17 +2,24 @@
 {{- $box_name := promptStringOnce . "box_name" "Box Name" -}}
 
 [data]
-	email = {{ $email | quote }}
-	box_name = {{ $box_name | quote }}
+    email = {{ $email | quote }}
+    box_name = {{ $box_name | quote }}
+
+[merge]
+    command = "bash"
+    args = [
+        "-c",
+        "cp {{ "{{" }} .Target | quote {{ "}}" }} {{ "{{" }} printf \"%s.base\" .Target | quote {{ "}}" }} && code --new-window --wait --merge {{ "{{" }} .Destination | quote {{ "}}" }} {{ "{{" }} .Target | quote {{ "}}" }} {{ "{{" }} printf \"%s.base\" .Target | quote {{ "}}" }} {{ "{{" }} .Source | quote {{ "}}" }}",
+    ]
 
 {{ if eq .chezmoi.os "darwin" }}
 {{- $restic_host := promptStringOnce . "restic.host" "Restic Host" -}}
 {{- $restic_healthcheck_url := promptStringOnce . "restic.healthcheck_url" "Restic Healthcheck URL" -}}
 
 [data.restic]
-	host = {{ $restic_host | quote  }}
-	healthcheck_url = {{ $restic_healthcheck_url | quote }}
+    host = {{ $restic_host | quote  }}
+    healthcheck_url = {{ $restic_healthcheck_url | quote }}
 {{- end }}
 
 [hooks.read-source-state.pre]
-	command = ".local/share/chezmoi/.install-password-manager.sh"
+    command = ".local/share/chezmoi/.install-password-manager.sh"
