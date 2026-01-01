@@ -2,6 +2,8 @@ packages:
   darwin:
     formulae:
       - ansible
+      - ansible-builder
+      - ansible-creator
       - ansible-lint
       - awscli
       - bitwarden-cli
