@@ -4,6 +4,28 @@ bw-session() {
   export BW_SESSION=$(bw unlock --raw)
 }
 
+bws-env() {
+  if [ -z "$BW_SESSION" ]; then
+    bw-session
+  fi
+
+  export BWS_ACCESS_TOKEN="$(bw get item bws | jq -r '.fields[] | select(.name=="bws_access_token") | .value')"
+  export BWS_PROJECT_ID="$(bw get item bws | jq -r '.fields[] | select(.name=="bws_project_id") | .value')"
+}
+
+bws-sc() {
+  if [ $# -ne 2 ]
+  then
+    echo "Usage: `basename $0` SECRET_KEY SECRET_VALUE"
+    return
+  fi
+
+  SECRET_KEY=$1
+  SECRET_VALUE=$2
+
+  bws secret create ${SECRET_KEY} ${SECRET_VALUE} ${BWS_PROJECT_ID}
+}
+
 pubkey() {
   if [ "$(uname)" = "Darwin" ]; then
     cat ~/.ssh/id_rsa.pub | pbcopy
@@ -106,4 +128,3 @@ episode_split() {
 dnstoys() {
   dig +noall +answer +additional "$1" @dns.toys
 }
-
