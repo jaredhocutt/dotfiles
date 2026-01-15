@@ -1,52 +1,52 @@
 Host router
-	HostName {{ (bitwardenFields "item" "chezmoi").ssh_config_ip_router.value }}
-	User root
+    HostName {{ (bitwardenFields "item" "chezmoi").ssh_config_ip_router.value }}
+    User root
 
 Host edge
-        HostName {{ (bitwardenFields "item" "chezmoi").ssh_config_ip_edge.value }}
+    HostName {{ (bitwardenFields "item" "chezmoi").ssh_config_ip_edge.value }}
 
 Host apps
-        HostName {{ (bitwardenFields "item" "chezmoi").ssh_config_ip_apps.value }}
+    HostName {{ (bitwardenFields "item" "chezmoi").ssh_config_ip_apps.value }}
 
 Host services
-	HostName {{ (bitwardenFields "item" "chezmoi").ssh_config_ip_services.value }}
+    HostName {{ (bitwardenFields "item" "chezmoi").ssh_config_ip_services.value }}
 
 Host dakboard
-        HostName {{ (bitwardenFields "item" "chezmoi").ssh_config_ip_dakboard.value }}
-        User pi
+    HostName {{ (bitwardenFields "item" "chezmoi").ssh_config_ip_dakboard.value }}
+    User pi
 
 Host dakboard-office
-	HostName {{ (bitwardenFields "item" "chezmoi").ssh_config_ip_dakboard_office.value }}
-	User pi
+    HostName {{ (bitwardenFields "item" "chezmoi").ssh_config_ip_dakboard_office.value }}
+    User pi
 
 Host home-assistant
-	HostName {{ (bitwardenFields "item" "chezmoi").ssh_config_ip_home_assistant.value }}
-	User homeassistant
+    HostName {{ (bitwardenFields "item" "chezmoi").ssh_config_ip_home_assistant.value }}
+    User homeassistant
 
 Host truenas
-        HostName {{ (bitwardenFields "item" "chezmoi").ssh_config_ip_truenas.value }}
-        User root
+    HostName {{ (bitwardenFields "item" "chezmoi").ssh_config_ip_truenas.value }}
+    User root
 
 Host octoprint
-	HostName {{ (bitwardenFields "item" "chezmoi").ssh_config_ip_octoprint.value }}
-	User pi
+    HostName {{ (bitwardenFields "item" "chezmoi").ssh_config_ip_octoprint.value }}
+    User pi
 
 Host redhat-mac
-	HostName {{ (bitwardenFields "item" "chezmoi").ssh_config_ip_jhocutt_mac.value }}
-	User jhocutt
+    HostName {{ (bitwardenFields "item" "chezmoi").ssh_config_ip_jhocutt_mac.value }}
+    User jhocutt
 
 Host jared-mac
-	HostName {{ (bitwardenFields "item" "chezmoi").ssh_config_ip_jared_mac.value }}
+    HostName {{ (bitwardenFields "item" "chezmoi").ssh_config_ip_jared_mac.value }}
 
 Host proxy
-	HostName {{ (bitwardenFields "item" "chezmoi").ssh_config_ip_proxy.value }}
-	User root
+    HostName {{ (bitwardenFields "item" "chezmoi").ssh_config_ip_proxy.value }}
+    User root
 
 Host *.amazonaws.com
-        User ec2-user
-        StrictHostKeyChecking no
-        UserKnownHostsFile /dev/null
+    User ec2-user
+    StrictHostKeyChecking no
+    UserKnownHostsFile /dev/null
 
 Host *
-        User jared
-        IdentityFile ~/.ssh/id_ed25519
+    User jared
+    IdentityFile ~/.ssh/id_ed25519
