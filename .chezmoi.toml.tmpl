@@ -1,12 +1,12 @@
 {{- $machineTypeChoices := list "personal" "work" -}}
 {{- $machineType := promptChoiceOnce . "machineType" "Machine Type" $machineTypeChoices -}}
 {{- $email := promptStringOnce . "email" "Email Address" -}}
-{{- $box_name := promptStringOnce . "box_name" "Box Name" -}}
+{{- $boxName := promptStringOnce . "boxName" "Box Name" -}}
 
 [data]
     machineType = {{ machineType | quote }}
     email = {{ $email | quote }}
-    box_name = {{ $box_name | quote }}
+    boxName = {{ $boxName | quote }}
 
 [merge]
     command = "bash"
