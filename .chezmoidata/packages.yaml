@@ -92,8 +92,7 @@ packages:
           id: 310633997
     work:
       formulae: []
-      casks:
-        - slack
+      casks: []
       mas: []
   linux:
     apt:
