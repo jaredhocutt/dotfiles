@@ -12,7 +12,6 @@ declare -a remove_labels=(
 	Contacts
 	Freeform
 	TV
-	Music
     News
 	Keynote
 	Numbers
