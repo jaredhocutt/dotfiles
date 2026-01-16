@@ -1,7 +1,7 @@
 [".tmux"]
-	type = "git-repo"
-	url = "https://github.com/gpakosz/.tmux.git"
-	refreshPeriod = "168h"
+    type = "git-repo"
+    url = "https://github.com/gpakosz/.tmux.git"
+    refreshPeriod = "168h"
 
 {{- $fontDir := "" }}
 {{- if eq .chezmoi.os "darwin" }}
@@ -49,3 +49,10 @@
     url = "https://github.com/romkatv/powerlevel10k/archive/{{ (gitHubLatestRelease "romkatv/powerlevel10k").TagName }}.tar.gz"
 	exact = true
     stripComponents = 1
+
+[".nvm"]
+    type = "git-repo"
+    url = "https://github.com/nvm-sh/nvm.git"
+    refreshPeriod = "168h"
+    revision = "{{ (gitHubLatestRelease "nvm-sh/nvm").TagName }}"
+
