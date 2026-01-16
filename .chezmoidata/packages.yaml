@@ -1,6 +1,8 @@
 packages:
   darwin:
     all:
+      tap:
+        - garethgeorge/homebrew-backrest-tap
       formulae:
         - ansible
         - ansible-builder
@@ -62,6 +64,8 @@ packages:
         - soundsource
         - visual-studio-code
         - vlc
+      services:
+        - garethgeorge/homebrew-backrest-tap/backrest
       mas:
         - name: Bitwarden
           id: 1352778147
@@ -74,6 +78,7 @@ packages:
         - name: Windows App
           id: 1295203466
     personal:
+      tap: []
       formulae: []
       casks:
         - chatgpt
@@ -81,6 +86,7 @@ packages:
         - insync
         - little-snitch
         - signal
+      services: []
       mas:
         - name: Good Notes 6
           id: 1444383602
@@ -91,8 +97,11 @@ packages:
         - name: WhatsApp Messenger
           id: 310633997
     work:
+      tap: []
       formulae: []
-      casks: []
+      casks:
+        - meetingbar
+      services: []
       mas: []
   linux:
     apt:

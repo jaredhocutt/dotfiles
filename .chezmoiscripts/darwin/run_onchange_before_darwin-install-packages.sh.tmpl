@@ -1,43 +1,87 @@
 #!/usr/bin/env zsh
 
 /opt/homebrew/bin/brew bundle --no-upgrade --file=/dev/stdin <<EOF
+{{ range .packages.darwin.all.tap -}}
+tap {{ . | quote }}
+{{ end -}}
+
+{{- if eq .machineType "personal" -}}
+{{ range .packages.darwin.personal.tap -}}
+tap {{ . | quote }}
+{{ end -}}
+{{- end -}}
+
+{{- if eq .machineType "work" -}}
+{{ range .packages.darwin.work.tap -}}
+tap {{ . | quote }}
+{{ end -}}
+{{- end -}}
+
+
 {{ range .packages.darwin.all.formulae -}}
 brew {{ . | quote }}
 {{ end -}}
+
 {{- if eq .machineType "personal" -}}
 {{ range .packages.darwin.personal.formulae -}}
 brew {{ . | quote }}
 {{ end -}}
 {{- end -}}
+
 {{- if eq .machineType "work" -}}
 {{ range .packages.darwin.work.formulae -}}
 brew {{ . | quote }}
 {{ end -}}
 {{- end -}}
+
+
 {{ range .packages.darwin.all.casks -}}
 cask {{ . | quote }}
 {{ end -}}
+
 {{- if eq .machineType "personal" -}}
 {{ range .packages.darwin.personal.casks -}}
-brew {{ . | quote }}
+cask {{ . | quote }}
 {{ end -}}
 {{- end -}}
+
 {{- if eq .machineType "work" -}}
 {{ range .packages.darwin.work.casks -}}
-brew {{ . | quote }}
+cask {{ . | quote }}
 {{ end -}}
 {{- end -}}
+
+
+{{ range .packages.darwin.all.services -}}
+brew {{ . | quote }}, restart_service: true
+{{ end -}}
+
+{{- if eq .machineType "personal" -}}
+{{ range .packages.darwin.personal.services -}}
+brew {{ . | quote }}, restart_service: true
+{{ end -}}
+{{- end -}}
+
+{{- if eq .machineType "work" -}}
+{{ range .packages.darwin.work.services -}}
+brew {{ . | quote }}, restart_service: true
+{{ end -}}
+{{- end -}}
+
+
 {{ range .packages.darwin.all.mas -}}
 mas {{ .name | quote }}, id: {{ .id }}
 {{ end -}}
+
 {{- if eq .machineType "personal" -}}
 {{ range .packages.darwin.personal.mas -}}
-brew {{ . | quote }}
+mas {{ .name | quote }}, id: {{ .id }}
 {{ end -}}
 {{- end -}}
+
 {{- if eq .machineType "work" -}}
 {{ range .packages.darwin.work.mas -}}
-brew {{ . | quote }}
+mas {{ .name | quote }}, id: {{ .id }}
 {{ end -}}
 {{- end -}}
 EOF
