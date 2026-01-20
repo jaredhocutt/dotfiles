@@ -101,6 +101,8 @@ packages:
       formulae: []
       casks:
         - meetingbar
+        - podman-desktop
+        - stirling-pdf
       services: []
       mas: []
   linux:
