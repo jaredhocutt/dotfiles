@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 bw-session() {
+  echo "Unlocking Bitwarden and exporting session key as BW_SESSION..."
   export BW_SESSION=$(bw unlock --raw)
 }
 
@@ -9,8 +10,14 @@ bws-env() {
     bw-session
   fi
 
-  export BWS_ACCESS_TOKEN="$(bw get item bws | jq -r '.fields[] | select(.name=="bws_access_token") | .value')"
-  export BWS_PROJECT_ID="$(bw get item bws | jq -r '.fields[] | select(.name=="bws_project_id") | .value')"
+  if [ -z "$BWS_ACCESS_TOKEN" ]; then
+    echo "Getting Bitwarden Secrets access token and setting as BWS_ACCESS_TOKEN..."
+    export BWS_ACCESS_TOKEN="$(bw get item bws | jq -r '.fields[] | select(.name=="bws_access_token") | .value')"
+  fi
+  if [ -z "$BWS_PROJECT_ID" ]; then
+    echo "Getting Bitwarden Secrets project ID and setting as BWS_PROJECT_ID..."
+    export BWS_PROJECT_ID="$(bw get item bws | jq -r '.fields[] | select(.name=="bws_project_id") | .value')"
+  fi
 }
 
 bws-sc() {
