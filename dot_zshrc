@@ -96,3 +96,6 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
+# Fix for node deprecation warnings for bitwarden cli
+# https://github.com/bitwarden/clients/issues/18741
+export NODE_OPTIONS="--no-deprecation"
