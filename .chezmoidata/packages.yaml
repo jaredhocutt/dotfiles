@@ -111,3 +111,8 @@ packages:
       - python3.13
       - tree
       - unzip
+    dnf:
+      - direnv
+      - python3.13
+      - tree
+      - unzip

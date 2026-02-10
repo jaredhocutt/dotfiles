@@ -6,6 +6,8 @@ These are my dotfiles, managed by [chezmoi](https://www.chezmoi.io/).
 
 - [Homebrew](https://brew.sh/) (MacOS only)
 - [chezmoi](https://www.chezmoi.io/)
+- zsh
+- git
 
 ## Quick Start
 
