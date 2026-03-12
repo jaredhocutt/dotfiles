@@ -98,12 +98,15 @@ packages:
           id: 310633997
     work:
       tap: []
-      formulae: []
+      formulae:
+        - dnsmasq
       casks:
         - cursor
         - meetingbar
         - podman-desktop
-      services: []
+      services:
+        - dnsmasq
+        - ollama
       mas: []
   linux:
     apt:
