@@ -21,6 +21,7 @@ packages:
         - htop
         - jq
         - kubectl
+        - lume
         - mas
         - nmap
         - ollama
@@ -33,6 +34,7 @@ packages:
         - rclone
         - rsync
         - skopeo
+        - sshpass
         - tmux
         - tree
         - vim
