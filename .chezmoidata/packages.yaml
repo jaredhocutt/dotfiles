@@ -90,6 +90,7 @@ packages:
         - insync
         - little-snitch
         - signal
+        - sublime-text
       services: []
       mas:
         - name: Good Notes 6
