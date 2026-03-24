@@ -84,6 +84,8 @@ packages:
       formulae: []
       casks:
         - chatgpt
+        - claude
+        - claude-code
         - gitkraken
         - insync
         - little-snitch
