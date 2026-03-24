@@ -11,6 +11,13 @@ Host apps
 Host services
     HostName {{ (bitwardenFields "item" "chezmoi").ssh_config_ip_services.value }}
 
+Host do-edge
+    HostName {{ (bitwardenFields "item" "chezmoi").ssh_config_ip_do_edge.value }}
+
+Host racknerd
+    HostName {{ (bitwardenFields "item" "chezmoi").ssh_config_ip_racknerd.value }}
+    User root
+
 Host dakboard
     HostName {{ (bitwardenFields "item" "chezmoi").ssh_config_ip_dakboard.value }}
     User pi
@@ -37,10 +44,6 @@ Host redhat-mac
 
 Host jared-mac
     HostName {{ (bitwardenFields "item" "chezmoi").ssh_config_ip_jared_mac.value }}
-
-Host proxy
-    HostName {{ (bitwardenFields "item" "chezmoi").ssh_config_ip_proxy.value }}
-    User root
 
 Host *.amazonaws.com
     User ec2-user
