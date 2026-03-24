@@ -105,13 +105,13 @@ packages:
       tap: []
       formulae:
         - dnsmasq
+        - openclaw-cli
       casks:
         - cursor
         - meetingbar
         - podman-desktop
       services:
         - dnsmasq
-        - ollama
       mas: []
   linux:
     apt:
