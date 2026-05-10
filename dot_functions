@@ -18,6 +18,10 @@ bws-env() {
     echo "Getting Bitwarden Secrets project ID and setting as BWS_PROJECT_ID..."
     export BWS_PROJECT_ID="$(bw get item bws | jq -r '.fields[] | select(.name=="bws_project_id") | .value')"
   fi
+  if [ -z "$BWS_ORGANIZATION_ID" ]; then
+    echo "Getting Bitwarden Secrets organization ID and setting as BWS_ORGANIZATION_ID..."
+    export BWS_ORGANIZATION_ID="$(bw get item bws | jq -r '.fields[] | select(.name=="bws_organization_id") | .value')"
+  fi
 }
 
 bws-sc() {
@@ -31,6 +35,14 @@ bws-sc() {
   SECRET_VALUE=$2
 
   bws secret create ${SECRET_KEY} ${SECRET_VALUE} ${BWS_PROJECT_ID}
+}
+
+flush-dns() {
+  ssh router unbound-control reload
+  ssh edge podman exec -it systemd-pihole pihole reloaddns
+
+  sudo dscacheutil -flushcache
+  sudo killall -HUP mDNSResponder
 }
 
 pubkey() {
