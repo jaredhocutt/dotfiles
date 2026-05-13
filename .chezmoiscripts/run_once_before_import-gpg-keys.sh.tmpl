@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+{{- $gpgKeysItemId := (bitwarden "item" "gpg").id }}
+{{- $keys := list
+    (dict "fingerprint" "CA072795102176C8A49CB21CB0441E00389AE2A7" "file" "gpg-personal.asc")
+    (dict "fingerprint" "B8BD56AE0922E4332A3795E6117C2BEB2D0B6E8F" "file" "gpg-redhat.asc")
+}}
+{{ range $keys }}
+if gpg --list-secret-keys "{{ .fingerprint }}" >/dev/null 2>&1; then
+    echo "GPG key {{ .fingerprint }} already imported, skipping"
+else
+    echo "Importing GPG key {{ .fingerprint }}..."
+    gpg --import << 'GPGKEY'
+{{ bitwardenAttachment .file $gpgKeysItemId -}}
+GPGKEY
+    printf '{{ .fingerprint }}:6:\n' | gpg --import-ownertrust
+    echo "GPG key {{ .fingerprint }} imported successfully"
+fi
+{{ end }}
