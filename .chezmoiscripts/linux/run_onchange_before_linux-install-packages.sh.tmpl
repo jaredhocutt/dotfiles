@@ -1,6 +1,7 @@
 #!/usr/bin/env zsh
 
 {{ if eq .chezmoi.osRelease.id "ubuntu" -}}
+sudo add-apt-repository --yes ppa:deadsnakes/ppa
 sudo apt install --yes {{ range .packages.linux.apt }}{{ . }} {{ end }}
 {{ end -}}
 
