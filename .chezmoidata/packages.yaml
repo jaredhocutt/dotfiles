@@ -35,6 +35,7 @@ packages:
         - sshpass
         - tmux
         - tree
+        - uv
         - vim
         - watch
         - wget
