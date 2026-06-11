@@ -26,8 +26,6 @@ packages:
         - nmap
         - ollama
         - pipx
-        - podman
-        - podman-compose
         - python@3.11
         - python@3.12
         - python@3.13
@@ -62,6 +60,7 @@ packages:
         - losslesscut
         - macwhisper
         - obs
+        - podman-desktop
         - scroll-reverser
         - soundsource
         - visual-studio-code
@@ -109,7 +108,6 @@ packages:
       casks:
         - cursor
         - meetingbar
-        - podman-desktop
       services:
         - dnsmasq
       mas: []
