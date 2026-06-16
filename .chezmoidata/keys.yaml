@@ -1,0 +1,8 @@
+gpg_keys:
+  all:
+    - fingerprint: "B8BD56AE0922E4332A3795E6117C2BEB2D0B6E8F"
+      file: "gpg-redhat.asc"
+  personal:
+    - fingerprint: "CA072795102176C8A49CB21CB0441E00389AE2A7"
+      file: "gpg-personal.asc"
+  work: []
