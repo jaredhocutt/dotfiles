@@ -3,7 +3,7 @@
 /opt/homebrew/bin/brew bundle --no-upgrade --file=/dev/stdin <<EOF
 {{ $machinePackages := index .packages.darwin .machineType -}}
 {{ range concat .packages.darwin.all.tap $machinePackages.tap -}}
-tap {{ . | quote }}
+tap {{ . | quote }}, trusted: true
 {{ end -}}
 
 {{ range concat .packages.darwin.all.formulae $machinePackages.formulae -}}
