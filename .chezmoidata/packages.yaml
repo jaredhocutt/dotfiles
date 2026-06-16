@@ -13,6 +13,7 @@ packages:
         - direnv
         - dockutil
         - ffmpeg
+        - gh
         - git
         - git-filter-repo
         - git-lfs
@@ -105,12 +106,14 @@ packages:
       tap: []
       formulae:
         - dnsmasq
-        - openclaw-cli
       casks:
+        - claude-code
         - cursor
+        - dbeaver-community
+        - gcloud-cli
         - meetingbar
-      services:
-        - dnsmasq
+        - podman-desktop
+      services: []
       mas: []
   linux:
     apt:
