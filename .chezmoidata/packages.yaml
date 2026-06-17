@@ -10,6 +10,7 @@ packages:
         - ansible-lint
         - awscli
         - bitwarden-cli
+        - chezmoi
         - direnv
         - dockutil
         - ffmpeg
@@ -23,6 +24,7 @@ packages:
         - jq
         - kubectl
         - lume
+        - lunchy
         - mas
         - nmap
         - pipx
@@ -79,6 +81,12 @@ packages:
           id: 1451685025
         - name: Windows App
           id: 1295203466
+        - name: Keynote
+          id: 361285480
+        - name: Numbers
+          id: 361304891
+        - name: Pages
+          id: 361309726
     personal:
       tap: []
       formulae: []
@@ -106,6 +114,7 @@ packages:
       tap: []
       formulae:
         - dnsmasq
+        - gemini-cli
         - ollama
       casks:
         - claude-code
