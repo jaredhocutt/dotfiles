@@ -50,10 +50,12 @@ packages:
         - audio-hijack
         - bartender
         - betterdisplay
+        - claude-code
         - domzilla-caffeine
         - firefox
         - fission
         - font-noto-sans-mono
+        - gcloud-cli
         - gimp
         - handbrake-app
         - istat-menus
@@ -89,25 +91,80 @@ packages:
           id: 361309726
     personal:
       tap: []
-      formulae: []
+      formulae:
+        - cookiecutter
+        - exiftool
+        - gcc
+        - go
+        - gyb
+        - iperf3
+        - pinentry-mac
+        - pipenv
+        - pwgen
+        - qemu
+        - rename
+        - restic
+        - sshuttle
+        - stow
+        - telnet
       casks:
+        - airfoil
+        - apidog
+        - apparency
+        - balenaetcher
+        - blender
+        - caldigit-docking-utility
+        - canva
         - chatgpt
         - claude
-        - claude-code
+        - crystalfetch
+        - daisydisk
+        - discord
+        - font-fjalla-one
+        - font-shadows-into-light
+        - font-shadows-into-light-two
+        - fujitsu-scansnap-home
         - gitkraken
+        - google-drive
         - insync
+        - kodi
+        - ledger-wallet
         - little-snitch
+        - logi-options+
+        - mediainfo
+        - mullvad-vpn
         - ollama-app
+        - openvpn-connect
+        - piezo
+        - prusaslicer
+        - rambox
+        - raspberry-pi-imager
+        - rode-central
         - signal
+        - steam
         - sublime-text
+        - tailscale-app
+        - the-unarchiver
+        - upscayl
+        - utm
       services: []
       mas:
+        - name: AudioBookBinder
+          id: 413969927
+        - name: Audiobook Builder
+          id: 1437681957
+        - name: Blackmagic Disk Speed Test
+          id: 425264550
         - name: Good Notes 6
           id: 1444383602
         - name: Notability
           id: 360593530
         - name: Parcel
           id: 639968404
+        - name: Planter
+          id: 1542642210
+        - name: Prime Video
+          id: 545519333
         - name: WhatsApp Messenger
           id: 310633997
     work:
@@ -117,10 +174,8 @@ packages:
         - gemini-cli
         - ollama
       casks:
-        - claude-code
         - cursor
         - dbeaver-community
-        - gcloud-cli
         - meetingbar
         - podman-desktop
       services: []
