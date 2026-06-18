@@ -1,149 +1,162 @@
-#!/usr/bin/env bash
+#!/usr/bin/env zsh
 
-bw-session() {
-  echo "Unlocking Bitwarden and exporting session key as BW_SESSION..."
-  export BW_SESSION=$(bw unlock --raw)
+# Internal: returns 0 if the first argument is -h/--help. Used by the public
+# functions below to print their usage and bail out.
+_is_help() {
+  [[ "$1" == "-h" || "$1" == "--help" ]]
 }
 
-bws-env() {
-  if [ -z "$BW_SESSION" ]; then
-    bw-session
+# Unlock the Bitwarden vault and export the session as BW_SESSION.
+bw-session() {
+  if _is_help "$1"; then
+    echo "Usage: ${funcstack[1]}"
+    echo "Unlock the Bitwarden vault and export the session key as BW_SESSION."
+    return 0
   fi
+
+  echo "Unlocking Bitwarden and exporting session key as BW_SESSION..." >&2
+  local session
+  session=$(bw unlock --raw) || { echo "bw unlock failed" >&2; return 1; }
+  export BW_SESSION="$session"
+}
+
+# Populate BWS_* env vars from the 'bws' Bitwarden item.
+bws-env() {
+  if _is_help "$1"; then
+    echo "Usage: ${funcstack[1]}"
+    echo "Read the 'bws' Bitwarden item and export BWS_ACCESS_TOKEN,"
+    echo "BWS_PROJECT_ID, and BWS_ORGANIZATION_ID (unlocking the vault first if"
+    echo "needed). Already-set variables are left untouched."
+    return 0
+  fi
+
+  if [ -z "$BW_SESSION" ]; then
+    bw-session || return 1
+  fi
+
+  local item
+  item=$(bw get item bws) || { echo "failed to fetch 'bws' item" >&2; return 1; }
 
   if [ -z "$BWS_ACCESS_TOKEN" ]; then
-    echo "Getting Bitwarden Secrets access token and setting as BWS_ACCESS_TOKEN..."
-    export BWS_ACCESS_TOKEN="$(bw get item bws | jq -r '.fields[] | select(.name=="bws_access_token") | .value')"
+    echo "Getting Bitwarden Secrets access token and setting as BWS_ACCESS_TOKEN..." >&2
+    export BWS_ACCESS_TOKEN=$(jq -r '.fields[] | select(.name=="bws_access_token") | .value' <<<"$item")
   fi
   if [ -z "$BWS_PROJECT_ID" ]; then
-    echo "Getting Bitwarden Secrets project ID and setting as BWS_PROJECT_ID..."
-    export BWS_PROJECT_ID="$(bw get item bws | jq -r '.fields[] | select(.name=="bws_project_id") | .value')"
+    echo "Getting Bitwarden Secrets project ID and setting as BWS_PROJECT_ID..." >&2
+    export BWS_PROJECT_ID=$(jq -r '.fields[] | select(.name=="bws_project_id") | .value' <<<"$item")
   fi
   if [ -z "$BWS_ORGANIZATION_ID" ]; then
-    echo "Getting Bitwarden Secrets organization ID and setting as BWS_ORGANIZATION_ID..."
-    export BWS_ORGANIZATION_ID="$(bw get item bws | jq -r '.fields[] | select(.name=="bws_organization_id") | .value')"
+    echo "Getting Bitwarden Secrets organization ID and setting as BWS_ORGANIZATION_ID..." >&2
+    export BWS_ORGANIZATION_ID=$(jq -r '.fields[] | select(.name=="bws_organization_id") | .value' <<<"$item")
   fi
 }
 
+# Create a Bitwarden secret in the configured project.
 bws-sc() {
-  if [ $# -ne 2 ]
-  then
-    echo "Usage: `basename $0` SECRET_KEY SECRET_VALUE"
-    return
+  local usage="Usage: ${funcstack[1]} SECRET_KEY SECRET_VALUE
+Create a secret in the Bitwarden Secrets project (BWS_PROJECT_ID).
+Runs bws-env first if the project ID is not yet set."
+  if _is_help "$1"; then echo "$usage"; return 0; fi
+  if [ $# -ne 2 ]; then echo "$usage" >&2; return 1; fi
+
+  if [ -z "$BWS_PROJECT_ID" ]; then
+    bws-env || return 1
   fi
 
-  SECRET_KEY=$1
-  SECRET_VALUE=$2
+  local secret_key=$1
+  local secret_value=$2
 
-  bws secret create ${SECRET_KEY} ${SECRET_VALUE} ${BWS_PROJECT_ID}
+  bws secret create "$secret_key" "$secret_value" "$BWS_PROJECT_ID"
 }
 
+# Reload DNS on router + edge and flush the local macOS cache.
 flush-dns() {
-  ssh router unbound-control reload
-  ssh edge podman exec -it systemd-pihole pihole reloaddns
+  if _is_help "$1"; then
+    echo "Usage: ${funcstack[1]}"
+    echo "Reload unbound on 'router', reload pihole on 'edge', and flush the"
+    echo "local macOS DNS cache (requires sudo)."
+    return 0
+  fi
 
+  echo "Reloading unbound on router..." >&2
+  ssh router unbound-control reload || echo "warn: unbound reload failed" >&2
+
+  echo "Reloading pihole on edge..." >&2
+  ssh edge podman exec systemd-pihole pihole reloaddns || echo "warn: pihole reload failed" >&2
+
+  echo "Flushing local DNS cache..." >&2
   sudo dscacheutil -flushcache
   sudo killall -HUP mDNSResponder
 }
 
+# Copy your SSH public key to the clipboard and print it.
 pubkey() {
-  if [ "$(uname)" = "Darwin" ]; then
-    cat ~/.ssh/id_rsa.pub | pbcopy
-  else
-    cat ~/.ssh/id_rsa.pub | xclip -selection clipboard
+  if _is_help "$1"; then
+    echo "Usage: ${funcstack[1]}"
+    echo "Copy your SSH public key (ed25519, falling back to rsa) to the"
+    echo "clipboard and print it to stdout."
+    return 0
   fi
 
-  cat ~/.ssh/id_rsa.pub
+  local key
+  for key in ~/.ssh/id_ed25519.pub ~/.ssh/id_rsa.pub; do
+    [ -f "$key" ] && break
+  done
+  if [ ! -f "$key" ]; then
+    echo "no public key found in ~/.ssh" >&2
+    return 1
+  fi
+
+  if [ "$(uname)" = "Darwin" ]; then
+    pbcopy < "$key"
+  else
+    xclip -selection clipboard < "$key"
+  fi
+
+  cat "$key"
 }
 
-lets_encrypt_cert() {
-  mkdir -p $(pwd)/letsencrypt/{config,work,logs}
+# Generate a random passphrase, GPG-encrypted to a file.
+vault-passphrase() {
+  if _is_help "$1"; then
+    echo "Usage: ${funcstack[1]}"
+    echo "Generate a 200-char random passphrase and GPG-encrypt it to"
+    echo "vault_passphrase.gpg in the current directory."
+    return 0
+  fi
 
-  certbot certonly \
-    --config-dir $(pwd)/letsencrypt/config \
-    --work-dir $(pwd)/letsencrypt/work \
-    --logs-dir $(pwd)/letsencrypt/logs \
-    --agree-tos \
-    --dns-route53 \
-    --dns-route53-propagation-seconds 45 \
-    --server https://acme-v02.api.letsencrypt.org/directory
-}
-
-vault_passphrase() {
   pwgen --capitalize --numerals --secure 200 1 | head -n1 | gpg --armor --recipient jaredhocutt@gmail.com --encrypt --output vault_passphrase.gpg
 }
 
-vault_passphrase_decrypt() {
+# Decrypt vault_passphrase.gpg to stdout.
+vault-passphrase-decrypt() {
+  if _is_help "$1"; then
+    echo "Usage: ${funcstack[1]}"
+    echo "Decrypt vault_passphrase.gpg (in the current directory) to stdout."
+    return 0
+  fi
+
   gpg --batch --use-agent --decrypt vault_passphrase.gpg
 }
 
-venv_selinux() {
-  for i in $(ls /usr/lib64/python3.*/site-packages | grep selinux); do
-    ln -s /usr/lib64/python3.*/site-packages/${i} ${VIRTUAL_ENV}/lib64/python3.*/site-packages/
-  done
-}
-
-reboot_windows() {
-  sudo grub2-reboot "$(sudo grep -i windows /boot/grub2/grub.cfg | cut -d"'" -f2)"
-  reboot
-}
-
-openshift_download() {
-  if [ $# -ne 1 ]
-  then
-    echo "Usage: `basename $0` OPENSHIFT_VERSION"
-    return
-  fi
-
-  if [ "$(uname)" = "Darwin" ]
-  then
-    client_os="mac"
-
-    #if [ "$(uname -m)" = "arm64" ]
-    #then
-    #  client_os="${client_os}-arm64"
-    #fi
-  else
-    client_os="linux"
-  fi
-
-  openshift_version_parts=( $(echo "${1}" | tr "." "\n") )
-
-  if [ ${#openshift_version_parts[@]} -eq 2 ]
-  then
-    wget http://mirror.openshift.com/pub/openshift-v4/clients/ocp/stable-${1}/openshift-install-${client_os}.tar.gz
-    wget http://mirror.openshift.com/pub/openshift-v4/clients/ocp/stable-${1}/openshift-client-${client_os}.tar.gz
-  else
-    wget http://mirror.openshift.com/pub/openshift-v4/clients/ocp/${1}/openshift-install-${client_os}.tar.gz
-    wget http://mirror.openshift.com/pub/openshift-v4/clients/ocp/${1}/openshift-client-${client_os}.tar.gz
-  fi
-
-  tar xvf openshift-install-${client_os}.tar.gz openshift-install
-  tar xvf openshift-client-${client_os}.tar.gz oc kubectl
-
-  rm -f openshift-install-${client_os}.tar.gz
-  rm -f openshift-client-${client_os}.tar.gz
-}
-
+# Convert a video to an animated GIF.
 video2gif() {
-  if [ $# -ne 4 ]
-  then
-    echo "Usage: `basename $0` INPUT FPS SCALE OUTPUT"
-    return
-  fi
+  local usage="Usage: ${funcstack[1]} INPUT FPS SCALE OUTPUT
+Convert INPUT to an animated GIF at the given FPS and SCALE (width in px,
+height auto). Example: ${funcstack[1]} clip.mp4 15 480 clip.gif"
+  if _is_help "$1"; then echo "$usage"; return 0; fi
+  if [ $# -ne 4 ]; then echo "$usage" >&2; return 1; fi
 
-  ffmpeg -i $1 -vf "fps=$2,scale=$3:-1:flags=lanczos,split[s0][s1];[s0]palettegen[p];[s1][p]paletteuse" -loop 0 $4
+  ffmpeg -i "$1" -vf "fps=$2,scale=$3:-1:flags=lanczos,split[s0][s1];[s0]palettegen[p];[s1][p]paletteuse" -loop 0 "$4"
 }
 
-episode_split() {
-  if [ $# -ne 4 ]
-  then
-    echo "Usage: `basename $0` INPUT START END OUTPUT"
-    return
-  fi
+# Losslessly cut a clip from a video by start/end time.
+episode-split() {
+  local usage="Usage: ${funcstack[1]} INPUT START END OUTPUT
+Copy (no re-encode) the segment of INPUT between START and END into OUTPUT.
+Times accept HH:MM:SS or seconds. Example: ${funcstack[1]} in.mkv 00:01:30 00:02:45 out.mkv"
+  if _is_help "$1"; then echo "$usage"; return 0; fi
+  if [ $# -ne 4 ]; then echo "$usage" >&2; return 1; fi
 
-  ffmpeg -i ${1} -vcodec copy -acodec copy -ss ${2} -to ${3} ${4}
-}
-
-dnstoys() {
-  dig +noall +answer +additional "$1" @dns.toys
+  ffmpeg -i "$1" -vcodec copy -acodec copy -ss "$2" -to "$3" "$4"
 }
