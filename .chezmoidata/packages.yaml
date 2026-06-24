@@ -11,6 +11,7 @@ packages:
         - awscli
         - bitwarden-cli
         - chezmoi
+        - container
         - direnv
         - dockutil
         - ffmpeg
