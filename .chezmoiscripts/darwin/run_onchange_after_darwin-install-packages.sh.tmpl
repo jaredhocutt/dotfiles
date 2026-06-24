@@ -1,0 +1,32 @@
+#!/usr/bin/env zsh
+
+# This script re-runs whenever the darwin package data changes. The hash below
+# is only here so chezmoi can detect that change and re-run the script; the
+# actual package list lives in ~/.Brewfile (also managed by chezmoi).
+# Packages hash: {{ .packages.darwin | toJson | sha256sum }}
+
+set -euo pipefail
+
+BREW=/opt/homebrew/bin/brew
+
+# Install/upgrade everything listed in ~/.Brewfile.
+"$BREW" bundle install --global
+
+# Optionally remove anything installed that is not in the Brewfile.
+#   - Set HOMEBREW_BUNDLE_CLEANUP=1 to clean up without prompting.
+#   - Otherwise, when running interactively, show what would be removed and ask.
+#   - For an on-demand cleanup any time, run: brew bundle cleanup --global --force
+cleanup="${HOMEBREW_BUNDLE_CLEANUP:-}"
+if [[ -z "$cleanup" && -t 0 ]]; then
+	# `cleanup` without --force is a dry run that lists what would be removed
+	# (and exits 1 if there is anything), so show that before prompting.
+	"$BREW" bundle cleanup --global || true
+	if read -q "REPLY?Remove the Homebrew packages not in the Brewfile? [y/N] "; then
+		cleanup=1
+	fi
+	echo
+fi
+
+if [[ "$cleanup" == 1 || "$cleanup" == true ]]; then
+	"$BREW" bundle cleanup --global --force
+fi

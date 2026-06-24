@@ -1,0 +1,20 @@
+{{ $machinePackages := index .packages.darwin .machineType -}}
+{{ range concat .packages.darwin.all.tap $machinePackages.tap -}}
+tap {{ . | quote }}, trusted: true
+{{ end -}}
+
+{{ range concat .packages.darwin.all.formulae $machinePackages.formulae -}}
+brew {{ . | quote }}
+{{ end -}}
+
+{{ range concat .packages.darwin.all.casks $machinePackages.casks -}}
+cask {{ . | quote }}
+{{ end -}}
+
+{{ range concat .packages.darwin.all.services $machinePackages.services -}}
+brew {{ . | quote }}, restart_service: true
+{{ end -}}
+
+{{ range concat .packages.darwin.all.mas $machinePackages.mas -}}
+mas {{ .name | quote }}, id: {{ .id }}
+{{ end -}}
