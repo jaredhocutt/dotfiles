@@ -20,11 +20,11 @@ Host racknerd
 
 Host dakboard
     HostName {{ (bitwardenFields "item" "chezmoi").ssh_config_ip_dakboard.value }}
-    User pi
+    User dakboard
 
 Host dakboard-office
     HostName {{ (bitwardenFields "item" "chezmoi").ssh_config_ip_dakboard_office.value }}
-    User pi
+    User dakboard
 
 Host home-assistant
     HostName {{ (bitwardenFields "item" "chezmoi").ssh_config_ip_home_assistant.value }}
