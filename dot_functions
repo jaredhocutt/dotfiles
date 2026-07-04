@@ -69,6 +69,31 @@ Runs bws-env first if the project ID is not yet set."
   bws secret create "$secret_key" "$secret_value" "$BWS_PROJECT_ID"
 }
 
+# Look up a Bitwarden secret's value by its key.
+bws-sg() {
+  local usage="Usage: ${funcstack[1]} SECRET_KEY
+Print the value of the Bitwarden secret whose key matches SECRET_KEY.
+Runs bws-env first if the access token is not yet set."
+  if _is_help "$1"; then echo "$usage"; return 0; fi
+  if [ $# -ne 1 ]; then echo "$usage" >&2; return 1; fi
+
+  if [ -z "$BWS_ACCESS_TOKEN" ]; then
+    bws-env || return 1
+  fi
+
+  local secret_key=$1
+  local value
+  value=$(bws secret list -o json | jq -r --arg key "$secret_key" \
+    '.[] | select(.key == $key) | .value') || return 1
+
+  if [ -z "$value" ]; then
+    echo "no secret found with key '$secret_key'" >&2
+    return 1
+  fi
+
+  echo "$value"
+}
+
 # Reload DNS on router + edge and flush the local macOS cache.
 flush-dns() {
   if _is_help "$1"; then
