@@ -52,7 +52,6 @@ packages:
         - bartender
         - betterdisplay
         - claude-code
-        - domzilla-caffeine
         - firefox
         - fission
         - font-noto-sans-mono
@@ -74,6 +73,8 @@ packages:
       services:
         - garethgeorge/homebrew-backrest-tap/backrest
       mas:
+        - name: Amphetamine
+          id: 937984704
         - name: Bitwarden
           id: 1352778147
         - name: Magnet
@@ -174,6 +175,7 @@ packages:
         - dnsmasq
         - gemini-cli
         - ollama
+        - pi-coding-agent
       casks:
         - cursor
         - dbeaver-community
