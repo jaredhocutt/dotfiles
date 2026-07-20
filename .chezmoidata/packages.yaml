@@ -173,7 +173,6 @@ packages:
       tap: []
       formulae:
         - dnsmasq
-        - gemini-cli
         - ollama
         - pi-coding-agent
       casks:
