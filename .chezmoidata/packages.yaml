@@ -186,11 +186,15 @@ packages:
   linux:
     apt:
       - direnv
+      - gnupg
+      - pinentry-curses
       - python3.13
       - tree
       - unzip
     dnf:
       - direnv
+      - gnupg2
+      - pinentry
       - python3.13
       - tree
       - unzip

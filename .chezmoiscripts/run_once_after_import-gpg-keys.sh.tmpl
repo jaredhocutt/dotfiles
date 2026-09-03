@@ -1,0 +1,42 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+{{- $gpgKeysItemId := (bitwarden "item" "gpg").id }}
+{{- $keys := concat .gpg_keys.all (index .gpg_keys .machineType) }}
+
+# gpg-agent shells out to a pinentry program to prompt for the passphrase when a
+# secret key is imported. Without one, gpg fails with "No pinentry".
+pinentry_found=false
+for program in pinentry pinentry-curses pinentry-tty pinentry-gnome3 pinentry-qt pinentry-mac; do
+    if command -v "$program" >/dev/null 2>&1; then
+        pinentry_found=true
+        break
+    fi
+done
+
+if [ "$pinentry_found" = false ]; then
+    echo "No pinentry program found, so gpg cannot prompt for the key passphrase." >&2
+    echo "Install one (dnf: pinentry, apt: pinentry-curses, brew: pinentry-mac) and re-run 'chezmoi apply'." >&2
+    exit 1
+fi
+
+# The terminal-based pinentry programs need to know which tty to prompt on, and
+# a long-running gpg-agent needs to be told about the current one.
+if gpg_tty=$(tty 2>/dev/null); then
+    export GPG_TTY="$gpg_tty"
+    gpg-connect-agent updatestartuptty /bye >/dev/null 2>&1 || true
+fi
+
+{{ range $keys }}
+if gpg --list-secret-keys "{{ .fingerprint }}" >/dev/null 2>&1; then
+    echo "GPG key {{ .fingerprint }} already imported, skipping"
+else
+    echo "Importing GPG key {{ .fingerprint }}..."
+    gpg --import << 'GPGKEY'
+{{ bitwardenAttachment .file $gpgKeysItemId -}}
+GPGKEY
+    printf '{{ .fingerprint }}:6:\n' | gpg --import-ownertrust
+    echo "GPG key {{ .fingerprint }} imported successfully"
+fi
+{{ end }}

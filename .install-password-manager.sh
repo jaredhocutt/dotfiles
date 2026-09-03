@@ -39,3 +39,8 @@ echo "Logging in to Bitwarden CLI..."
 
 # Perform the initial login to Bitwarden
 bw login
+
+echo "Unlocking Bitwarden and exporting session key as BW_SESSION..." >&2
+local session
+session=$(bw unlock --raw) || { echo "bw unlock failed" >&2; return 1; }
+export BW_SESSION="$session"
