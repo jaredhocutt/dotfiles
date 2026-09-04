@@ -184,17 +184,59 @@ packages:
       services: []
       mas: []
   linux:
-    apt:
-      - direnv
-      - gnupg
-      - pinentry-curses
-      - python3.13
-      - tree
-      - unzip
-    dnf:
-      - direnv
-      - gnupg2
-      - pinentry
-      - python3.13
-      - tree
-      - unzip
+      apt:
+        - curl
+        - direnv
+        - ffmpeg
+        - gh
+        - git
+        - git-filter-repo
+        - git-lfs
+        - gnupg
+        - htop
+        - jq
+        - nmap
+        - pinentry-curses
+        - pipx
+        - pwgen
+        - python3.13
+        - rclone
+        - rsync
+        - skopeo
+        - sshpass
+        - tmux
+        - tree
+        - unzip
+        - vim
+        - wget
+        - xclip
+        - yt-dlp
+        - zsh
+      dnf:
+        - curl
+        - direnv
+        - ffmpeg-free
+        - gh
+        - git
+        - git-filter-repo
+        - git-lfs
+        - gnupg2
+        - htop
+        - jq
+        - nmap
+        - pinentry
+        - pipx
+        - pwgen
+        - python3-ansible-lint
+        - python3.13
+        - rclone
+        - rsync
+        - skopeo
+        - sshpass
+        - tmux
+        - tree
+        - unzip
+        - vim-enhanced
+        - xclip
+        - yt-dlp
+        - zsh
