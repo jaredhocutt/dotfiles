@@ -72,3 +72,23 @@
     refreshPeriod = "168h"
 {{-   end }}
 {{- end }}
+
+{{- /* sdk-sm publishes several release trains (rust-v*, python-v*,
+       bws-v*), so gitHubLatestRelease returns the wrong one -- pick the newest
+       bws-v* release instead. The "bws-v" prefix is deliberate: a bare "bws-"
+       would also match the legacy bws-cli-v* tags. */}}
+{{- $bwsTag := "" }}
+{{- range (gitHubReleases "bitwarden/sdk-sm") }}
+{{-   if and (not $bwsTag) (hasPrefix "bws-v" .TagName) }}{{ $bwsTag = .TagName }}{{ end }}
+{{- end }}
+{{- if not $bwsTag }}{{ fail "no bws-v* release found for bitwarden/sdk-sm" }}{{ end }}
+{{- $bwsVersion := trimPrefix "bws-v" $bwsTag }}
+{{- $bwsOS := get (dict "linux" "unknown-linux-gnu" "darwin" "apple-darwin") .chezmoi.os }}
+{{- $bwsArch := get (dict "amd64" "x86_64" "arm64" "aarch64") .chezmoi.arch }}
+{{- if or (not $bwsOS) (not $bwsArch) }}{{ fail (printf "no bws release build for %s/%s" .chezmoi.os .chezmoi.arch) }}{{ end }}
+[".local/bin/bws"]
+    type = "archive-file"
+    url = "https://github.com/bitwarden/sdk-sm/releases/download/{{ $bwsTag }}/bws-{{ $bwsArch }}-{{ $bwsOS }}-{{ $bwsVersion }}.zip"
+    path = "bws"
+    executable = true
+    refreshPeriod = "168h"
