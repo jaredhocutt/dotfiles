@@ -225,6 +225,7 @@ packages:
         - jq
         - nmap
         - pinentry
+        - pinentry-qt
         - pipx
         - pwgen
         - python3-ansible-lint
