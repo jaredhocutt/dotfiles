@@ -56,3 +56,19 @@
     refreshPeriod = "168h"
     revision = "{{ (gitHubLatestRelease "nvm-sh/nvm").TagName }}"
 
+
+{{- /* macOS gets uv from Homebrew */}}
+{{- if eq .chezmoi.os "linux" }}
+{{-   $uvArch := get (dict "amd64" "x86_64" "arm64" "aarch64") .chezmoi.arch }}
+{{-   if not $uvArch }}{{ fail (printf "no uv release build for arch %q" .chezmoi.arch) }}{{ end }}
+{{-   $uvTriple := printf "%s-unknown-linux-gnu" $uvArch }}
+{{-   $uvVersion := (gitHubLatestRelease "astral-sh/uv").TagName }}
+{{-   range list "uv" "uvx" }}
+[".local/bin/{{ . }}"]
+    type = "archive-file"
+    url = "https://github.com/astral-sh/uv/releases/download/{{ $uvVersion }}/uv-{{ $uvTriple }}.tar.gz"
+    path = "uv-{{ $uvTriple }}/{{ . }}"
+    executable = true
+    refreshPeriod = "168h"
+{{-   end }}
+{{- end }}
