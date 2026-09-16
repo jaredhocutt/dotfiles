@@ -11,6 +11,9 @@ Host apps
 Host services
     HostName {{ (bitwardenFields "item" "chezmoi").ssh_config_ip_services.value }}
 
+Host pta
+    HostName {{ (bitwardenFields "item" "chezmoi").ssh_config_ip_pta.value }}
+
 Host do-edge
     HostName {{ (bitwardenFields "item" "chezmoi").ssh_config_ip_do_edge.value }}
 
@@ -47,7 +50,6 @@ Host jared-mac
 
 Host *.amazonaws.com
     User ec2-user
-    StrictHostKeyChecking no
     UserKnownHostsFile /dev/null
 
 Host *
