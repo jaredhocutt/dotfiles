@@ -196,6 +196,7 @@ packages:
         - htop
         - jq
         - nmap
+        - openssl
         - pinentry-curses
         - pipx
         - pwgen
@@ -224,6 +225,7 @@ packages:
         - htop
         - jq
         - nmap
+        - openssl
         - pinentry
         - pinentry-qt
         - pipx
