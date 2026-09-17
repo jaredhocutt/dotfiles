@@ -48,6 +48,10 @@ Host redhat-mac
 Host jared-mac
     HostName {{ (bitwardenFields "item" "chezmoi").ssh_config_ip_jared_mac.value }}
 
+Host jared-desktop
+    HostName {{ (bitwardenFields "item" "chezmoi").ssh_config_ip_jared_desktop.value }}
+    User jared
+
 Host *.amazonaws.com
     User ec2-user
     UserKnownHostsFile /dev/null
