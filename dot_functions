@@ -94,6 +94,45 @@ Runs bws-env first if the access token is not yet set."
   echo "$value"
 }
 
+# Delete a Bitwarden secret by its key.
+bws-sd() {
+  local usage="Usage: ${funcstack[1]} SECRET_KEY
+Delete the Bitwarden secret whose key matches SECRET_KEY, after confirming.
+Refuses if more than one secret has that key.
+Runs bws-env first if the access token is not yet set."
+  if _is_help "$1"; then echo "$usage"; return 0; fi
+  if [ $# -ne 1 ]; then echo "$usage" >&2; return 1; fi
+
+  if [ -z "$BWS_ACCESS_TOKEN" ]; then
+    bws-env || return 1
+  fi
+
+  local secret_key=$1
+  local ids
+  ids=$(bws secret list -o json | jq -r --arg key "$secret_key" \
+    '.[] | select(.key == $key) | .id') || return 1
+
+  if [ -z "$ids" ]; then
+    echo "no secret found with key '$secret_key'" >&2
+    return 1
+  fi
+
+  local -a id_list=("${(@f)ids}")
+  if [ ${#id_list} -gt 1 ]; then
+    echo "multiple secrets found with key '$secret_key'; delete by ID instead:" >&2
+    printf '  %s\n' "${id_list[@]}" >&2
+    return 1
+  fi
+
+  if ! read -q "?Delete secret '$secret_key' (${id_list[1]})? [y/N] "; then
+    echo >&2
+    return 1
+  fi
+  echo >&2
+
+  bws secret delete "${id_list[1]}"
+}
+
 # Reload DNS on router + edge and flush the local macOS cache.
 flush-dns() {
   if _is_help "$1"; then
