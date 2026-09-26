@@ -29,6 +29,8 @@ packages:
         - lunchy
         - mas
         - nmap
+        - pinentry
+        - pinentry-mac
         - pipx
         - python@3.11
         - python@3.12
@@ -100,7 +102,6 @@ packages:
         - go
         - gyb
         - iperf3
-        - pinentry-mac
         - pipenv
         - pwgen
         - qemu
@@ -202,6 +203,7 @@ packages:
         - openssl
         - pinentry-curses
         - pipx
+        - podman
         - pwgen
         - python3.13
         - rclone
@@ -233,6 +235,7 @@ packages:
         - pinentry
         - pinentry-qt
         - pipx
+        - podman
         - pwgen
         - python3-ansible-lint
         - python3.13

@@ -36,7 +36,16 @@ source $ZSH/oh-my-zsh.sh
 
 export EDITOR="vim"
 export GOPATH="${HOME}/go"
-export GPG_TTY=$(tty)
+
+# gpg prompts for passphrases in the terminal when there is one, and with a GUI
+# otherwise (see ~/.local/bin/pinentry-auto).
+if [[ -t 0 ]]; then
+	export GPG_TTY=$(tty)
+	export PINENTRY_USER_DATA=tty
+else
+	unset GPG_TTY
+	export PINENTRY_USER_DATA=gui
+fi
 
 # History
 export HISTSIZE=50000000

@@ -1,0 +1,41 @@
+#!/bin/sh
+#
+# gpg-agent's pinentry-program (see ~/.gnupg/gpg-agent.conf). Picks a terminal
+# or GUI pinentry for each passphrase prompt based on PINENTRY_USER_DATA, which
+# gpg forwards from the environment of whatever asked for the passphrase. The
+# shell rc files set it to "tty" in an interactive terminal and to "gui"
+# everywhere else (e.g. VS Code's git integration, which has no terminal).
+
+# gpg-agent may have been started with a minimal PATH.
+PATH="$PATH:/opt/homebrew/bin:/usr/local/bin:/usr/bin"
+
+first_available() {
+    for program in "$@"; do
+        if command -v "$program" 2>/dev/null; then
+            return 0
+        fi
+    done
+    return 1
+}
+
+# gpg-agent passes the X display as an argument rather than in the environment.
+display="$DISPLAY"
+prev=
+for arg in "$@"; do
+    [ "$prev" = "--display" ] && display="$arg"
+    prev="$arg"
+done
+
+pinentry=
+if [ "$PINENTRY_USER_DATA" = tty ]; then
+    pinentry=$(first_available pinentry-curses pinentry-tty)
+elif [ "$(uname -s)" = Darwin ]; then
+    pinentry=$(first_available pinentry-mac)
+elif [ -n "$display" ] || [ -n "$WAYLAND_DISPLAY" ]; then
+    pinentry=$(first_available pinentry-qt pinentry-gnome3 pinentry-gtk-2)
+fi
+
+# No match (e.g. no GUI available), so use whatever terminal pinentry exists.
+[ -n "$pinentry" ] || pinentry=$(first_available pinentry-curses pinentry-tty pinentry)
+
+exec "$pinentry" "$@"

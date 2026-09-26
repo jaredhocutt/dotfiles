@@ -28,7 +28,16 @@ alias fcmd='firewall-cmd'
 export EDITOR='vim'
 export PROJECT_HOME="${HOME}/projects"
 export GOPATH="${HOME}/go"
-export GPG_TTY=$(tty)
+
+# gpg prompts for passphrases in the terminal when there is one, and with a GUI
+# otherwise (see ~/.local/bin/pinentry-auto).
+if [ -t 0 ]; then
+        export GPG_TTY=$(tty)
+        export PINENTRY_USER_DATA=tty
+else
+        unset GPG_TTY
+        export PINENTRY_USER_DATA=gui
+fi
 
 export HISTSIZE=50000000
 export HISTFILESIZE=$HISTSIZE

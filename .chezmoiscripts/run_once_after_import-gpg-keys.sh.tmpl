@@ -25,6 +25,7 @@ fi
 # a long-running gpg-agent needs to be told about the current one.
 if gpg_tty=$(tty 2>/dev/null); then
     export GPG_TTY="$gpg_tty"
+    export PINENTRY_USER_DATA=tty
     gpg-connect-agent updatestartuptty /bye >/dev/null 2>&1 || true
 fi
 
