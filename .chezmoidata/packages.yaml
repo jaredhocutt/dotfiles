@@ -175,10 +175,14 @@ packages:
         - dnsmasq
         - pi-coding-agent
       casks:
+        - caldigit-docking-utility
+        - caldigit-thunderbolt-charging
+        - caldigit-usb-hub-support-driver
         - cursor
         - dbeaver-community
         - meetingbar
         - podman-desktop
+        - rectangle
       services: []
       mas: []
   linux:
