@@ -136,7 +136,6 @@ packages:
         - logi-options+
         - mediainfo
         - mullvad-vpn
-        - ollama-app
         - openvpn-connect
         - piezo
         - prusaslicer
@@ -178,7 +177,6 @@ packages:
       tap: []
       formulae:
         - dnsmasq
-        - ollama
         - pi-coding-agent
       casks:
         - cursor
