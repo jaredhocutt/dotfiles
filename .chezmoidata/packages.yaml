@@ -37,6 +37,7 @@ packages:
         - rclone
         - rsync
         - skopeo
+        - speech
         - sshpass
         - tmux
         - tree
