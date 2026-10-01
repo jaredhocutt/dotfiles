@@ -3,6 +3,7 @@ packages:
     all:
       tap:
         - garethgeorge/homebrew-backrest-tap
+        - domt4/autoupdate
       formulae:
         - ansible
         - ansible-builder
