@@ -55,6 +55,7 @@ packages:
         - bartender
         - betterdisplay
         - claude-code
+        - comfy
         - firefox
         - fission
         - font-noto-sans-mono
