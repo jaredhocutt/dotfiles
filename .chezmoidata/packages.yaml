@@ -54,13 +54,11 @@ packages:
       casks:
         - alfred
         - appcleaner
-        - audio-hijack
         - bartender
         - betterdisplay
         - claude-code
         - comfy
         - firefox
-        - fission
         - font-noto-sans-mono
         - gcloud-cli
         - gimp
@@ -68,13 +66,11 @@ packages:
         - istat-menus
         - iterm2
         - lm-studio
-        - loopback
         - losslesscut
         - macwhisper
         - obs
         - podman-desktop
         - scroll-reverser
-        - soundsource
         - visual-studio-code
         - vlc
       services:
@@ -115,6 +111,7 @@ packages:
         - airfoil
         - apidog
         - apparency
+        - audio-hijack
         - balenaetcher
         - blender
         - caldigit-docking-utility
@@ -124,6 +121,7 @@ packages:
         - crystalfetch
         - daisydisk
         - discord
+        - fission
         - font-fjalla-one
         - font-shadows-into-light
         - font-shadows-into-light-two
@@ -135,6 +133,7 @@ packages:
         - ledger-wallet
         - little-snitch
         - logi-options+
+        - loopback
         - mediainfo
         - mullvad-vpn
         - openvpn-connect
@@ -144,6 +143,7 @@ packages:
         - raspberry-pi-imager
         - rode-central
         - signal
+        - soundsource
         - steam
         - sublime-text
         - tailscale-app
