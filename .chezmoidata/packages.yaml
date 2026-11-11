@@ -111,7 +111,6 @@ packages:
         - stow
         - telnet
       casks:
-        - affinity
         - airfoil
         - apidog
         - apparency
