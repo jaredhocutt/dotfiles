@@ -22,6 +22,7 @@ packages:
         - git-lfs
         - gnu-sed
         - gnupg
+        - gyb
         - htop
         - jq
         - kubectl
